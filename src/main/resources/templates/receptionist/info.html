@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <title>Info</title>
+</head>
+<body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
+
+    <!-- SIDEBAR -->
+  <div class="col-span-1 flex" id="sidebar">
+    <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
+      <div class="py-6">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="ml-4">
+            <h1 class="text-xl font-bold my-2" th:text="${receptionistName}">--</h1>
+            <p class="text-sm text-gray-500" th:text="${receptionistEmail}">--</p>
+          </div>
+        </div>
+        <button id="logoutBtn" class="w-full bg-blue-500 text-white py-2 rounded mb-6">Log out</button>
+        <nav class="space-y-2">
+          <a th:href="@{/receptionist/dashboard/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+            <i class="fa-solid fa-grip text-xl"></i>
+            <p>Dashboard</p>
+          </a>
+          <a th:href="@{/receptionist/patients/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 font-medium flex gap-2 items-center">
+            <i class="fa-solid fa-bed-pulse text-xl"></i>
+            <p>Patients</p>
+          </a>
+          <a th:href="@{/receptionist/appointments/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+             <i class="fa-solid fa-calendar-week text-xl"></i><p>Appointments</p>
+          </a>
+          <a th:href="@{/receptionist/aboutme/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+             <i class="fa-solid fa-address-card"></i><p>About Me</p>
+          </a>
+          <a th:href="@{/receptionist/info/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 font-bold text-blue-600 flex gap-2 items-center">
+             <i class="fa-solid fa-circle-info text-xl"></i><p>Info</p>
+          </a>
+        </nav>
+      </div>
+    </aside>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="col-span-4">
+    <div class="w-full flex justify-center items-center shadow-sm rounded border border-gray-300 m-10">
+    	<h2>About Receptionist's Role:</h2>
+    </div>
+    <p>
+    	As a Receptionist, I can:
+		<br/><br/>
+		<li>create and register new patients in the system.</li>
+		<br/>
+		<li>create new appointments for my patients.</li>
+    </p>
+  </div>
+</body>
+</html>
