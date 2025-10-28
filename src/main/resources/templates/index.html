@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/pharmacyLogo.png">
+    <title>Patient Admission System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<!-- LANDING PAGE -->
+
+<body class="bg-blue-100 flex items-center justify-center min-h-screen px-4">
+
+    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-lg text-center">
+        <!-- Heading -->
+        <h1 class="text-2xl md:text-3xl font-bold text-blue-900 mb-2">
+            PATIENT ADMISSION SYSTEM
+        </h1>
+        <p class="text-gray-600 mb-6">
+            Welcome to the Patient Admission System.<br>
+            Please select your role to continue.
+        </p>
+
+        <!-- Buttons -->
+        <div class="space-y-4">
+            <a href="/admin/dashboard"
+                class="block w-full py-3 rounded-lg bg-blue-600 text-white font-semibold text-center hover:bg-blue-700 transition">
+                Admin
+            </a>
+
+            <button onclick="openStaffPopup()"
+                class="block w-full py-3 rounded-lg bg-green-600 text-white font-semibold text-center hover:bg-green-700 transition">
+                Staff
+            </button>
+
+
+            <a href="/patient/login"
+                class="block w-full py-3 rounded-lg bg-purple-600 text-white font-semibold text-center hover:bg-purple-700 transition">
+                Patient
+            </a>
+        </div>
+
+
+        <!-- Illustration (Doctor Icon) -->
+        <div class="mt-8 flex justify-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/387/387561.png" alt="Doctor Illustration"
+                class="w-28 h-28 md:w-36 md:h-36">
+        </div>
+    </div>
+
+    <!-- Popup for Staff -->
+    <div id="staffPopup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-lg p-6 w-80 text-center relative">
+            <h2 class="text-xl font-semibold text-blue-900 mb-4">Select Your Role</h2>
+            <!-- Close Button -->
+            <button onclick="closeStaffPopup()"
+                class="absolute top-2 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+            <div class="space-y-3">
+                <a href="/staff/login?role=doctor"
+                    class="block py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition">
+                    Doctor
+                </a>
+                <a href="/staff/login?role=nurse"
+                    class="block py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition">
+                    Nurse
+                </a>
+                <a href="/staff/login?role=receptionist"
+                    class="block py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition">
+                    Receptionist
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
