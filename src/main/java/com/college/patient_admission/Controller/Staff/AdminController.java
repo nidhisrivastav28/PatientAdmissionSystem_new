@@ -19,6 +19,9 @@ import com.college.patient_admission.Services.Staff.NurseService;
 import com.college.patient_admission.Services.Staff.ReceptionistService;
 import com.college.patient_admission.Services.Staff.StaffService;
 
+import jakarta.servlet.http.HttpSession;
+
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +60,12 @@ public class AdminController {
 	}
 
 	@GetMapping("/dashboard")
-	public String showDashboard(Model model) {
+	public String showDashboard(Model model, HttpSession session) {
+		if(session.getAttribute("loggedInStaff") == null || session.getAttribute("role") == null || !session.getAttribute("role").equals("Admin")) {
+			model.addAttribute("error", "Please login to access the Admin Dashboard.");
+			return "staffs/commonLogin";
+		}
+
 		StaffAuth admin = adminService.getAdmin(); // transactional, gets default admin
 
 		model.addAttribute("adminName", admin.getStaff().getName());
@@ -273,5 +281,10 @@ public class AdminController {
 		return "redirect:/admin/appointments";
 	}
 
-
+	@GetMapping("/logout")
+	public String logout(HttpSession session, Model model) {
+		session.invalidate();
+		model.addAttribute("info", "Logged out successfully.");
+		return "staffs/commonLogin";
+	}
 }

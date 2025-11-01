@@ -10,8 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.college.patient_admission.Models.Staff.Doctor;
+import com.college.patient_admission.Models.Staff.Nurse;
+import com.college.patient_admission.Models.Staff.Receptionist;
+import com.college.patient_admission.Models.Staff.Staff;
 import com.college.patient_admission.Models.Staff.StaffAuth;
 import com.college.patient_admission.Services.Staff.StaffAuthService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/staff")
@@ -35,20 +41,50 @@ public class CommonStaffController {
     // OTP vala Part starts
     @PostMapping("/send-otp")
     public String sendOtp(@RequestParam String email, @RequestParam String role, Model model) {
-        if (role == null || role.isEmpty())
+        if (role == null || role.isEmpty()){
             role = "Staff";
+        }
         try {
-            StaffAuth staff = staffAuthService.getAuthByEmail(email);
-            if (staff == null) {
+            StaffAuth staffAuth = staffAuthService.getAuthByEmail(email);
+
+            if (staffAuth == null) {
                 model.addAttribute("error", "Email not registered! Contact Admin.");
-            } else if (staff.getPassword() == null || staff.getPassword().isEmpty()) {
-                // Generate OTP
+                model.addAttribute("role", capitalize(role));
+                return "staffs/commonLogin";
+            }
+
+            // ✅ Check if this email belongs to the selected role
+            Staff staff = staffAuth.getStaff();
+            boolean roleMatches = false;
+
+            switch (role.toLowerCase()) {
+                case "doctor":
+                    roleMatches = staff instanceof Doctor;
+                    break;
+                case "nurse":
+                    roleMatches = staff instanceof Nurse;
+                    break;
+                case "receptionist":
+                    roleMatches = staff instanceof Receptionist;
+                    break;
+            }
+
+            if (!roleMatches) {
+                model.addAttribute("error", "This email does not belong to a " + capitalize(role) + "!");
+                model.addAttribute("role", capitalize(role));
+                model.addAttribute("info", "You can visit to change your role");
+                model.addAttribute("role", capitalize(role));
+                return "staffs/commonLogin";
+            }
+
+            // ✅ Proceed with OTP only if role matches
+            if (staffAuth.getPassword() == null || staffAuth.getPassword().isEmpty()) {
                 generatedOtp = String.format("%06d", new Random().nextInt(900000));
 
-                // Send mail
+                // Send OTP mail
                 SimpleMailMessage msg = new SimpleMailMessage();
                 msg.setTo(email);
-                msg.setFrom("www.nidhisrivastav@gmail.com"); // must match your Gmail
+                msg.setFrom("www.nidhisrivastav@gmail.com");
                 msg.setSubject("Your Staff OTP - Patient Admission System");
                 msg.setText("Your OTP for password setup is: " + generatedOtp);
                 mailSender.send(msg);
@@ -58,13 +94,14 @@ public class CommonStaffController {
                 model.addAttribute("otpSent", true);
                 model.addAttribute("email", email);
                 model.addAttribute("role", capitalize(role));
+                model.addAttribute("success", "OTP sent to your email!");
             } else {
-                // Password already set → disable OTP section
                 model.addAttribute("passwordAlreadySet", true);
                 model.addAttribute("email", email);
                 model.addAttribute("role", capitalize(role));
                 model.addAttribute("error", "Password already set! Please login.");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Mail sending failed: " + e.getMessage());
@@ -108,38 +145,50 @@ public class CommonStaffController {
 
     @PostMapping("/login")
     public String handleLogin(
-            @RequestParam String role,
+            @RequestParam String role, // role user select kare
             @RequestParam String username,
             @RequestParam String password,
-            Model model) {
-        if (role == null || role.isEmpty())
-            role = "Staff";
-        // Dummy logic — replace with your actual service/database validation
-        StaffAuth staff = staffAuthService.getAuthByEmail(username);
+            Model model,
+            HttpSession session) {
 
-        if (staff != null && new BCryptPasswordEncoder().matches(password, staff.getPassword())) {
-            Long staffId = staff.getStaff().getID();
-//             System.out.println("Input password: " + password);
-// System.out.println("Stored hashed password: " + staff.getPassword());
-// System.out.println("Password match: " + new BCryptPasswordEncoder().matches(password, staff.getPassword()));
-// System.out.println("Role: " + role);
+        StaffAuth staffAuth = staffAuthService.getAuthByEmail(username);
+
+        if (staffAuth != null && new BCryptPasswordEncoder().matches(password, staffAuth.getPassword())) {
+            Staff staff = staffAuth.getStaff();
+            boolean roleMatches = false;
 
             switch (role.toLowerCase()) {
                 case "doctor":
-                    return "redirect:/doctor/dashboard/" + staffId;
+                    roleMatches = staff instanceof Doctor;
+                    break;
                 case "nurse":
-                    return "redirect:/nurse/dashboard/" + staffId;
+                    roleMatches = staff instanceof Nurse;
+                    break;
                 case "receptionist":
-                    return "redirect:/reception/dashboard/" + staffId;
-                default:
-                    return "redirect:/staff/dashboard/" + staffId;
+                    roleMatches = staff instanceof Receptionist;
+                    break;
             }
+
+            if (!roleMatches) {
+                model.addAttribute("error", "Invalid role for this account!");
+                return "staffs/commonLogin";
+            }
+
+            session.setAttribute("loggedInStaff", staff);
+            session.setAttribute("role", role);
+
+            Long staffId = staff.getID();
+            if (staff instanceof Doctor)
+                return "redirect:/doctor/dashboard/" + staffId;
+            if (staff instanceof Nurse)
+                return "redirect:/nurse/dashboard/" + staffId;
+            if (staff instanceof Receptionist)
+                return "redirect:/reception/dashboard/" + staffId;
+            return "redirect:/staff/dashboard/" + staffId;
         } else {
-            model.addAttribute("role", capitalize(role));
             model.addAttribute("error", "Invalid email or password!");
             return "staffs/commonLogin";
         }
-
     }
 
     private String capitalize(String text) {

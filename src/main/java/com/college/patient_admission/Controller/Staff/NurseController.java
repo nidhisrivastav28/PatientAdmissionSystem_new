@@ -28,6 +28,8 @@ import com.college.patient_admission.Services.Staff.NurseService;
 import com.college.patient_admission.Services.Staff.StaffAuthService;
 import com.college.patient_admission.Services.Staff.StaffService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/nurse")
 public class NurseController {
@@ -48,7 +50,12 @@ public class NurseController {
 	}
 
 	@GetMapping("/dashboard/{id}")
-	public String showDashboard(@PathVariable Long id, Model model) {
+	public String showDashboard(@PathVariable Long id, Model model, HttpSession session) {
+		if(session.getAttribute("loggedInStaff") == null || session.getAttribute("role") == null || !session.getAttribute("role").equals("Nurse")) {
+			model.addAttribute("error", "Please login to access the Nurse Dashboard.");
+			return "staffs/commonLogin";
+		}
+		
 		StaffAuth nurse = staffAuthService.getAuthByStaffById(id);
 
 		model.addAttribute("nurseId", id);
@@ -166,5 +173,12 @@ public class NurseController {
 		model.addAttribute("nurseEmail", nurse.getEmail());
 		
 		return "nurse/info";
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session, Model model) {
+		session.invalidate();
+		model.addAttribute("info", "Logged out successfully.");
+		return "staffs/commonLogin";
 	}
 }

@@ -29,6 +29,8 @@ import com.college.patient_admission.Services.Staff.DoctorService;
 import com.college.patient_admission.Services.Staff.StaffAuthService;
 import com.college.patient_admission.Services.Staff.StaffService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/doctor")
 public class DoctorController {
@@ -51,7 +53,13 @@ public class DoctorController {
 	}
 
 	@GetMapping("/dashboard/{id}")
-	public String showDashboard(@PathVariable Long id, Model model) {
+	public String showDashboard(@PathVariable Long id, Model model,HttpSession session) {
+		
+		if(session.getAttribute("loggedInStaff") == null || session.getAttribute("role") == null || !session.getAttribute("role").equals("Doctor")) {
+			model.addAttribute("error", "Please login to access the Doctor Dashboard.");
+			return "staffs/commonLogin";
+		}
+
 		StaffAuth doctor = staffAuthService.getAuthByStaffById(id);
 
 		model.addAttribute("doctorId", id);
@@ -185,4 +193,12 @@ public class DoctorController {
 		
 		return "doctor/info";
 	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session, Model model) {
+		session.invalidate();
+		model.addAttribute("info", "Logged out successfully.");
+		return "staffs/commonLogin";
+	}
+
 }
