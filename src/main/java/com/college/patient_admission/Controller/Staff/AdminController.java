@@ -21,7 +21,7 @@ import com.college.patient_admission.Services.Staff.StaffService;
 
 import jakarta.servlet.http.HttpSession;
 
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
+// import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

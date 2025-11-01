@@ -1,2 +1,5 @@
-1. login of doctor-nuse-receptionist mismatched
-2. login-logout authentication
+# login of doctor-nuse-receptionist mismatched ✅
+# login-logout authentication ✅
+# have to separate the admin part or else need to need an email pswd for admin login
+# whole patient part is pending
+# have to connect the patient part with admin & other staffs
