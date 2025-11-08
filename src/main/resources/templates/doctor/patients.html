@@ -1,57 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <title>Patients</title>
 </head>
+
 <body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
     <!-- SIDEBAR -->
-    <div class="col-span-1 flex" id="sidebar">
-	    <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
-	      <div class="py-6">
-	        <div class="flex items-center mb-6">
-	          <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
-	            <i class="fa-solid fa-user-doctor"></i>
-	          </div>
-	          <div class="ml-4">
-	            <h1 class="text-xl font-bold my-2" th:text="${doctorName}">--</h1>
-	            <p class="text-sm text-gray-500" th:text="${doctorEmail}">--</p>
-	          </div>
-	        </div>
-	        <button id="logoutBtn" class="w-full bg-blue-500 text-white py-2 rounded mb-6">Log out</button>
-	        <nav class="space-y-2">
-	          <a th:href="@{/doctor/dashboard/{id}(id=${doctorId})}" class="block py-2 px-4 rounded hover:bg-blue-100 font-medium flex gap-2 items-center">
-	            <i class="fa-solid fa-grip text-xl"></i>
-	            <p>Dashboard</p>
-	          </a>
-	          <a th:href="@{/doctor/patients/{id}(id=${doctorId})}" class="block py-2 px-4 rounded hover:bg-blue-100 font-bold text-blue-600 flex gap-2 items-center">
-	            <i class="fa-solid fa-bed-pulse text-xl"></i>
-	            <p>Patients</p>
-	          </a>
-	          <a th:href="@{/doctor/appointments/{id}(id=${doctorId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-	             <i class="fa-solid fa-calendar-week text-xl"></i><p>Appointments</p>
-	          </a>
-	          <a th:href="@{/doctor/aboutme/{id}(id=${doctorId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-	             <i class="fa-solid fa-address-card"></i><p>About Me</p>
-	          </a>
-	          <a th:href="@{/doctor/info/{id}(id=${doctorId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-	             <i class="fa-solid fa-circle-info text-xl"></i><p>Info</p>
-	          </a>
-	        </nav>
-	      </div>
-	    </aside>
-	  </div>
+    <div th:replace="~{fragments/sideBar :: sidebar}"></div>
 
     <!-- MAIN CONTENT -->
     <div class="col-span-4 px-6">
         <div class="flex justify-between items-center py-4">
             <p class="font-bold">My Patients</p>
 
-            <button onclick="openModal()" class="whitespace-nowrap h-fit px-3 py-1 rounded border-2 border-black hover:border-blue-500 hover:bg-blue-500 hover:text-white hover:font-bold">
+            <button onclick="openModal()"
+                class="whitespace-nowrap h-fit px-3 py-1 rounded border-2 border-black hover:border-blue-500 hover:bg-blue-500 hover:text-white hover:font-bold">
                 Add Patient
             </button>
         </div>
@@ -61,27 +30,31 @@
             <table class="min-w-full divide-y divide-gray-200 border">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Of Birth</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Gender</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date
+                            Of Birth</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" th:if="${patients != null}">
-				    <tr th:each="patient : ${patients}"
-			        th:onclick="'window.location.href=\'' + @{/doctor/{doc_id}/patients/{patient_id}/details(doc_id=${doctorId}, patient_id=${patient.id})} + '\';'" 
-			        class="hover:bg-blue-50 cursor-pointer transition">
-					    <td th:text="${patient.id}">1</td>
-					    <td th:text="${patient.pname}">John</td>
-					    <td th:text="${patient.pgender}">female</td>
-					    <td th:text="${patient.pdob}">123456</td>
-					</tr>
-      			</tbody>
+                    <tr th:each="patient : ${patients}"
+                        th:onclick="'window.location.href=\'' + @{/doctor/{doc_id}/patients/{patient_id}/details(doc_id=${doctorId}, patient_id=${patient.id})} + '\';'"
+                        class="hover:bg-blue-50 cursor-pointer transition">
+                        <td th:text="${patient.id}">1</td>
+                        <td th:text="${patient.pname}">John</td>
+                        <td th:text="${patient.pgender}">female</td>
+                        <td th:text="${patient.pdob}">123456</td>
+                    </tr>
+                </tbody>
             </table>
             <!-- IN CASE OF EMPTY TABLE -->
-            <div id="emptyState" 
-            class="border border-t-0 border-gray-200 rounded-b p-6 flex flex-col items-center justify-center space-y-4"
-            th:if="${patients == null or #lists.isEmpty(patients)}">
+            <div id="emptyState"
+                class="border border-t-0 border-gray-200 rounded-b p-6 flex flex-col items-center justify-center space-y-4"
+                th:if="${patients == null or #lists.isEmpty(patients)}">
                 <div class="flex justify-center items-center">
                     <img src="/images/NotFound.svg" alt="No data illustration" class="w-64 h-auto" />
                 </div>
@@ -102,42 +75,50 @@
                     </button>
                 </div>
 
-                <form th:action="@{/doctor/patients/{id}/create(id=${doctorId})}" method="post" id="patientForm" class="space-y-6">
+                <form th:action="@{/doctor/patients/{id}/create(id=${doctorId})}" method="post" id="patientForm"
+                    class="space-y-6">
                     <div class="flex items-center gap-4">
                         <div class="w-1/2">
                             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" id="name" name="name" required class="mt-1 px-3 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"/>
+                            <input type="text" id="name" name="name" required
+                                class="mt-1 px-3 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" />
                         </div>
                         <div class="w-1/2">
                             <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-                            <input type="text" id="gender" name="gender" required class="mt-1 px-3 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"/>
+                            <input type="text" id="gender" name="gender" required
+                                class="mt-1 px-3 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" />
                         </div>
                     </div>
 
                     <div class="flex items-center gap-4">
                         <div class="w-1/2">
                             <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                            <input type="date" id="dob" name="dob" class="mt-1 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"/>
+                            <input type="date" id="dob" name="dob"
+                                class="mt-1 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" />
                         </div>
                         <div class="w-1/2">
                             <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                            <input type="tel" id="phone" name="phone" class="mt-1 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"/>
+                            <input type="tel" id="phone" name="phone"
+                                class="mt-1 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" />
                         </div>
                     </div>
 
                     <div class="flex items-center gap-4">
                         <div class="w-1/2">
                             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"/>
+                            <input type="email" id="email" name="email" required
+                                class="mt-1 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" />
                         </div>
                         <div class="w-1/2">
                             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"/>
+                            <input type="password" id="password" name="password" required
+                                class="mt-1 block w-full rounded-md border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" />
                         </div>
                     </div>
 
                     <div id="finalSubmitDiv">
-                        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">Submit</button>
+                        <button type="submit"
+                            class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">Submit</button>
                     </div>
                 </form>
             </div>
@@ -145,4 +126,5 @@
     </div>
     <script src="/js/doctor/patient.js"></script>
 </body>
+
 </html>

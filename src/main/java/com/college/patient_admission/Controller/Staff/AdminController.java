@@ -61,7 +61,9 @@ public class AdminController {
 
 	@GetMapping("/dashboard")
 	public String showDashboard(Model model, HttpSession session) {
-		if(session.getAttribute("loggedInStaff") == null || session.getAttribute("role") == null || !session.getAttribute("role").equals("Admin")) {
+		if(session.getAttribute("loggedInStaff") == null 
+		|| session.getAttribute("role") == null 
+		|| !session.getAttribute("role").equals("Admin")) {
 			model.addAttribute("error", "Please login to access the Admin Dashboard.");
 			return "staffs/commonLogin";
 		}

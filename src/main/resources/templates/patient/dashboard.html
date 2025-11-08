@@ -1,12 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <title>Dashboard</title>
 </head>
-<body>
-    <p th:text="'Hi Patient!'"></p>
+<body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
 
+  <!-- SIDEBAR -->
+  <div class="col-span-1 flex" id="sidebar">
+    <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
+      <div class="py-6">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="ml-4">
+            <h1 class="text-xl font-bold my-2" th:text="${receptionistName}">--</h1>
+            <p class="text-sm text-gray-500" th:text="${receptionistEmail}">--</p>
+          </div>
+        </div>
+        
+        <!-- Logout btn -->
+        <div th:if="${session.loggedInStaff != null}">
+          <a th:href="@{/receptionist/logout}" class="w-full bg-blue-500 text-white py-2 rounded mb-6 block text-center">
+            Log out
+          </a>
+        </div>
+
+        
+        <nav class="space-y-2">
+          <a th:href="@{/receptionist/dashboard/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 font-bold text-blue-600 flex gap-2 items-center">
+            <i class="fa-solid fa-grip text-xl"></i>
+            <p>Dashboard</p>
+          </a>
+          <a th:href="@{/receptionist/patients/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 font-medium flex gap-2 items-center">
+            <i class="fa-solid fa-bed-pulse text-xl"></i>
+            <p>Patients</p>
+          </a>
+          <a th:href="@{/receptionist/appointments/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+             <i class="fa-solid fa-calendar-week text-xl"></i><p>Appointments</p>
+          </a>
+          <a th:href="@{/receptionist/aboutme/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+             <i class="fa-solid fa-address-card"></i><p>About Me</p>
+          </a>
+          <a th:href="@{/receptionist/info/{id}(id=${receptionistId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+             <i class="fa-solid fa-circle-info text-xl"></i><p>Info</p>
+          </a>
+        </nav>
+      </div>
+    </aside>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="col-span-4">
+    <!-- WELCOME -->
+    <div class="relative w-full h-1/3 min-h-[250px]">
+      <img src="/images/Receptionist.jpg" alt="background" class="absolute inset-0 w-full h-full object-cover rounded-lg"/>
+      <div class="absolute inset-0 bg-white/60"></div>
+
+      <div class="relative z-10 px-6 py-2">
+        <h3 class="text-lg font-semibold mb-4">Welcome!</h3>
+        <h1 class="text-3xl font-bold my-2 doctor-name" th:text="${patientName} + '.'">--</h1>
+        <p class="text-sm mb-4 max-w-xl">
+          Thanks for joining us. You can monitor daily activities here!!
+        </p>
+      </div>
+
+      <!-- STATUS BOXES -->
+      <div class="flex justify-between px-6 mt-16">
+        <div class="w-2/5">
+          <h2 class="text-md font-semibold mb-6">Status</h2>
+          <div id="status-container" class="grid grid-cols-2 gap-4">
+            <div th:each="item : ${statusList}" 
+                class="flex items-center justify-between bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+                <div>
+                    <div class="text-blue-600 text-2xl font-bold mb-2" th:text="${item.value}">0</div>
+                    <div class="text-gray-700 text-sm font-medium">
+                        <span th:text="${item.label}">Label</span>
+                    </div>
+                </div>
+                <span class="status-icon w-1/2 h-full flex items-center justify-center bg-blue-300/30 rounded">
+                    <i th:classappend="${item.label == 'New Patients' ? 'fa-solid fa-hospital-user' :
+                                    item.label == 'New Booking' ? 'fa-solid fa-bookmark' :
+                                    'fa-solid fa-circle-question'} + ' text-blue-600 text-2xl'"></i>
+                </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-1/2 h-64 px-6 overflow-y-auto">
+          <h2 class="text-md font-semibold mb-4">Today's Sessions</h2>
+          <table class="min-w-full divide-y divide-gray-200 border text-center">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Doctor Name</th>
+                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Patient Name</th>
+                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Time</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200" th:if="${appointments != null}">
+				    <tr th:each="appointment : ${appointments}" class="hover:bg-blue-50 cursor-pointer transition text-center">
+					    <td th:text="${appointment.doctor.name}">--</td>
+					    <td th:text="${appointment.patient.pname}">--</td>
+					    <td th:text="${appointment.from} + ' - ' + ${appointment.to}">14:00 - 14:50</td>
+					</tr>
+      			</tbody>
+            </table>
+
+            <div id="emptyState" 
+            class="border border-t-0 border-gray-200 rounded-b p-6 flex flex-col items-center justify-center space-y-4"
+            th:if="${appointments == null or #lists.isEmpty(appointments)}">
+                <div class="flex justify-center items-center">
+                    <img src="/images/NotFound.svg" alt="No data illustration" class="w-20 h-auto" />
+                </div>
+                <p class="text-center text-gray-700 font-medium">
+                    We couldn't find anything related to your sessions.
+                </p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

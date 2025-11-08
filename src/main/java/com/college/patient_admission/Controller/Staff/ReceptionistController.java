@@ -40,7 +40,7 @@ public class ReceptionistController {
 	private final AdminService adminService;
 	private final AppointmentService appointmentService;
 	private final PatientService patientService;
-	
+	 
 	public ReceptionistController(ReceptionistService receptionistService, 
 			StaffService staffService, StaffAuthService staffAuthService, 
 			AdminService adminService, AppointmentService appointmentService, 
@@ -59,6 +59,9 @@ public class ReceptionistController {
 			model.addAttribute("error", "Please login to access the Receptionist Dashboard.");
 			return "staffs/commonLogin";
 		}
+
+		model.addAttribute("session", session);
+
 		StaffAuth receptionist = staffAuthService.getAuthByStaffById(id);
 
 		model.addAttribute("receptionistId", id);

@@ -13,55 +13,7 @@
 <body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
 
   <!-- SIDEBAR -->
-  <div class="col-span-1 flex" id="sidebar">
-    <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
-      <div class="py-6">
-        <div class="flex items-center mb-6">
-          <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
-            <i class="fa-solid fa-user-doctor"></i>
-          </div>
-          <div class="ml-4">
-            <h1 class="text-xl font-bold my-2" th:text="${doctorName}">--</h1>
-            <p class="text-sm text-gray-500" th:text="${doctorEmail}">--</p>
-          </div>
-        </div>
-        <!-- Logout btn -->
-        <div th:if="${session.loggedInStaff != null}">
-          <a th:href="@{/doctor/logout}" class="w-full bg-blue-500 text-white py-2 rounded mb-6 block text-center">
-            Log out
-          </a>
-        </div>
-
-        <nav class="space-y-2">
-          <a th:href="@{/doctor/dashboard/{id}(id=${doctorId})}"
-            class="block py-2 px-4 rounded hover:bg-blue-100 font-bold text-blue-600 flex gap-2 items-center">
-            <i class="fa-solid fa-grip text-xl"></i>
-            <p>Dashboard</p>
-          </a>
-          <a th:href="@{/doctor/patients/{id}(id=${doctorId})}"
-            class="block py-2 px-4 rounded hover:bg-blue-100 font-medium flex gap-2 items-center">
-            <i class="fa-solid fa-bed-pulse text-xl"></i>
-            <p>Patients</p>
-          </a>
-          <a th:href="@{/doctor/appointments/{id}(id=${doctorId})}"
-            class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-            <i class="fa-solid fa-calendar-week text-xl"></i>
-            <p>Appointments</p>
-          </a>
-          <a th:href="@{/doctor/aboutme/{id}(id=${doctorId})}"
-            class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-            <i class="fa-solid fa-address-card"></i>
-            <p>About Me</p>
-          </a>
-          <a th:href="@{/doctor/info/{id}(id=${doctorId})}"
-            class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-            <i class="fa-solid fa-circle-info text-xl"></i>
-            <p>Info</p>
-          </a>
-        </nav>
-      </div>
-    </aside>
-  </div>
+  <div th:replace="~{fragments/sideBar :: sidebar}"></div>
 
   <!-- MAIN CONTENT -->
   <div class="col-span-4">

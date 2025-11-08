@@ -1,6 +1,12 @@
 # login of doctor-nuse-receptionist mismatched ✅
 # login-logout authentication ✅
-# have to separate the admin part or else need to need an email pswd for admin login
+# have to separate the admin part or else need to need an email pswd for admin login✅
 # whole patient part is pending
 # have to connect the patient part with admin & other staffs
 # remove warning in Models->staffs
+-------------------------------------------------------------------------------------------------------------
+# 08-11-2025
+# authentication part fully complete ✅
+# separated the side part of all the staff & then included it in the html file ✅
+# now patient & its connection is left
+-------------------------------------------------------------------------------------------------------------

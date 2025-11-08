@@ -1,55 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <title>Schedule</title>
 </head>
+
 <body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
+
     <!-- SIDEBAR -->
-  <div class="col-span-1 flex" id="sidebar">
-    <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
-      <div class="py-6">
-        <div class="flex items-center mb-6">
-          <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
-            <i class="fa-solid fa-user-nurse"></i>
-          </div>
-          <div class="ml-4">
-            <h1 class="text-xl font-bold my-2" th:text="${nurseName}">--</h1>
-            <p class="text-sm text-gray-500" th:text="${nurseEmail}">--</p>
-          </div>
-        </div>
-        <button id="logoutBtn" class="w-full bg-blue-500 text-white py-2 rounded mb-6">Log out</button>
-        <nav class="space-y-2">
-          <a th:href="@{/nurse/dashboard/{id}(id=${nurseId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-            <i class="fa-solid fa-grip text-xl"></i>
-            <p>Dashboard</p>
-          </a>
-          <a th:href="@{/nurse/patients/{id}(id=${nurseId})}" class="block py-2 px-4 rounded hover:bg-blue-100 font-medium flex gap-2 items-center">
-            <i class="fa-solid fa-bed-pulse text-xl"></i>
-            <p>Patients</p>
-          </a>
-          <a th:href="@{/nurse/schedules/{id}(id=${nurseId})}" class="block py-2 px-4 rounded hover:bg-blue-100 font-bold text-blue-600 flex gap-2 items-center">
-             <i class="fa-solid fa-calendar-week text-xl"></i><p>Schedules</p>
-          </a>
-          <a th:href="@{/nurse/aboutme/{id}(id=${nurseId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-             <i class="fa-solid fa-address-card"></i><p>About Me</p>
-          </a>
-          <a th:href="@{/nurse/info/{id}(id=${nurseId})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-             <i class="fa-solid fa-circle-info text-xl"></i><p>Info</p>
-          </a>
-        </nav>
-      </div>
-    </aside>
-  </div>
+    <div th:replace="~{fragments/sideBar :: sidebar}"></div>
 
     <!-- MAIN CONTENT -->
     <div class="col-span-4 px-6">
         <div class="flex justify-between items-center py-4">
-            <button onclick="openModal()" class="whitespace-nowrap h-fit px-3 py-1 rounded border-2 border-black hover:border-blue-500 hover:bg-blue-500 hover:text-white hover:font-bold">
+            <button onclick="openModal()"
+                class="whitespace-nowrap h-fit px-3 py-1 rounded border-2 border-black hover:border-blue-500 hover:bg-blue-500 hover:text-white hover:font-bold">
                 Add Schedule
             </button>
         </div>
@@ -58,31 +28,38 @@
             <table class="min-w-full divide-y divide-gray-200 border">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nurse ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nurse Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Task</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nurse
+                            ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nurse
+                            Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Patient ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Patient Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Task
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" th:if="${schedules != null}">
-				    <tr th:each="schedule : ${schedules}" class="hover:bg-blue-50 cursor-pointer transition">
-					    <td th:text="${schedule.nurse.ID}">1</td>
-					    <td th:text="${schedule.nurse.name}">John</td>
-					    <td th:text="${schedule.patient.id}">--</td>
-					    <td th:text="${schedule.patient.pname}">--</td>
-					    <td th:text="${schedule.scheduleDate}">22-09-2018</td>
-					    <td th:text="${schedule.time}">14:00</td>
-					    <td th:text="${schedule.task}">--</td>
-					</tr>
-      			</tbody>
+                    <tr th:each="schedule : ${schedules}" class="hover:bg-blue-50 cursor-pointer transition">
+                        <td th:text="${schedule.nurse.ID}">1</td>
+                        <td th:text="${schedule.nurse.name}">John</td>
+                        <td th:text="${schedule.patient.id}">--</td>
+                        <td th:text="${schedule.patient.pname}">--</td>
+                        <td th:text="${schedule.scheduleDate}">22-09-2018</td>
+                        <td th:text="${schedule.time}">14:00</td>
+                        <td th:text="${schedule.task}">--</td>
+                    </tr>
+                </tbody>
             </table>
 
-            <div id="emptyState" 
-            class="border border-t-0 border-gray-200 rounded-b p-6 flex flex-col items-center justify-center space-y-4"
-            th:if="${schedules == null or #lists.isEmpty(schedules)}">
+            <div id="emptyState"
+                class="border border-t-0 border-gray-200 rounded-b p-6 flex flex-col items-center justify-center space-y-4"
+                th:if="${schedules == null or #lists.isEmpty(schedules)}">
                 <div class="flex justify-center items-center">
                     <img src="/images/NotFound.svg" alt="No data illustration" class="w-64 h-auto" />
                 </div>
@@ -102,67 +79,86 @@
                     </button>
                 </div>
 
-                <form th:action="@{/nurse/schedules/{id}/create(id=${nurseId})}" method="post" id="scheduleForm" class="space-y-6 text-sm">
-				    <!-- Nurse Selection -->
-				    <div class="flex items-center gap-4">
-				        <div class="w-1/2">
-				        	<label for="n_id" class="block font-medium text-gray-700">Nurse ID</label>
-				            <select id="n_id" name="n_id" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" required>
-							  <option value="" disabled selected>Select Nurse</option>
-							  <option th:each="nurse : ${nurses}" th:value="${nurse.ID}" th:text="${nurse.ID + ' (' + nurse.name + ')'}"></option>
-							</select>
-				        </div>
-				        <div class="w-1/2">
-				        	<label for="n_name" class="block font-medium text-gray-700">Nurse Name</label>
-				            <input type="text" id="n_name"class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" readonly />
-				        </div>
-				    </div>
+                <form th:action="@{/nurse/schedules/{id}/create(id=${nurseId})}" method="post" id="scheduleForm"
+                    class="space-y-6 text-sm">
+                    <!-- Nurse Selection -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/2">
+                            <label for="n_id" class="block font-medium text-gray-700">Nurse ID</label>
+                            <select id="n_id" name="n_id"
+                                class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"
+                                required>
+                                <option value="" disabled selected>Select Nurse</option>
+                                <option th:each="nurse : ${nurses}" th:value="${nurse.ID}"
+                                    th:text="${nurse.ID + ' (' + nurse.name + ')'}"></option>
+                            </select>
+                        </div>
+                        <div class="w-1/2">
+                            <label for="n_name" class="block font-medium text-gray-700">Nurse Name</label>
+                            <input type="text" id="n_name"
+                                class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"
+                                readonly />
+                        </div>
+                    </div>
 
-				    <!-- Patient Selection -->
-				    <div class="flex items-center gap-4">
-				        <div class="w-1/2">
-				        	<label for="p_id" class="block font-medium text-gray-700">Patient ID</label>
-				            <select id="p_id" name="p_id" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"required>
-							  <option value="" disabled selected>Select Patient</option>
-							  <option th:each="p : ${patients}" th:value="${p.ID}" th:text="${p.ID + ' (' + p.name + ')'}"></option>
-							</select>
-				        </div>
-				        <div class="w-1/2">
-				        	<label for="pname" class="block font-medium text-gray-700">Patient Name</label>
-				            <input type="text" id="pname" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" readonly />
-				        </div>
-				    </div>
+                    <!-- Patient Selection -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/2">
+                            <label for="p_id" class="block font-medium text-gray-700">Patient ID</label>
+                            <select id="p_id" name="p_id"
+                                class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"
+                                required>
+                                <option value="" disabled selected>Select Patient</option>
+                                <option th:each="p : ${patients}" th:value="${p.ID}"
+                                    th:text="${p.ID + ' (' + p.name + ')'}"></option>
+                            </select>
+                        </div>
+                        <div class="w-1/2">
+                            <label for="pname" class="block font-medium text-gray-700">Patient Name</label>
+                            <input type="text" id="pname"
+                                class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"
+                                readonly />
+                        </div>
+                    </div>
 
-				    <!-- Date and Time -->
-				    <div class="flex items-center gap-4">
-				        <div class="w-1/2">
-				        	<label for="date" class="block font-medium text-gray-700">Date</label>
-				            <input type="date" id="date" name="date"class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" required />
-				        </div>
-				        <div class="w-1/4">
-				        	<label for="time" class="block font-medium text-gray-700">Time</label>
-				            <select id="time" name="time" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" required></select>
-				        </div>
-				    </div>
+                    <!-- Date and Time -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/2">
+                            <label for="date" class="block font-medium text-gray-700">Date</label>
+                            <input type="date" id="date" name="date"
+                                class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"
+                                required />
+                        </div>
+                        <div class="w-1/4">
+                            <label for="time" class="block font-medium text-gray-700">Time</label>
+                            <select id="time" name="time"
+                                class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"
+                                required></select>
+                        </div>
+                    </div>
 
-				    <!-- Reason -->
-				    <div>
-				    	<label for="task" class="block font-medium text-gray-700">Task</label>
-				        <input type="text" id="task" name="task" class="mt-1 px-3 block w-full shadow-sm border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none" required />
-				    </div>
+                    <!-- Reason -->
+                    <div>
+                        <label for="task" class="block font-medium text-gray-700">Task</label>
+                        <input type="text" id="task" name="task"
+                            class="mt-1 px-3 block w-full shadow-sm border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none"
+                            required />
+                    </div>
 
-				    <div id="finalSubmitDiv">
-				        <button type="submit" id="submitBtn" disabled class="cursor-pointer w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">Submit</button>
-				    </div>
-				</form>
+                    <div id="finalSubmitDiv">
+                        <button type="submit" id="submitBtn" disabled
+                            class="cursor-pointer w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-	<script th:inline="javascript">
-	    const nurses = /*[[${nurses}]]*/ [];
-	    const patients = /*[[${patients}]]*/ [];
-	</script>
-	<script src="/js/nurse/schedule.js"></script>
+    <script th:inline="javascript">
+        const nurses = /*[[${nurses}]]*/[];
+        const patients = /*[[${patients}]]*/[];
+    </script>
+    <script src="/js/nurse/schedule.js"></script>
 </body>
+
 </html>

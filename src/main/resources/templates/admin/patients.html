@@ -10,39 +10,8 @@
 </head>
 <body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
     <!-- SIDEBAR -->
-    <div class="col-span-1 flex">
-        <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
-            <div class="py-6">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
-                        <i class="fa-solid fa-user-tie"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h2 class="font-bold text-lg" th:text="${adminName}">Admin Name</h2>
-                        <p class="text-sm text-gray-500" th:text="${adminEmail}">admin@email.com</p>
-                    </div>
-                </div>
-                <button id="logoutBtn" class="w-full bg-blue-500 text-white py-2 rounded mb-6">Log out</button>
-                <nav class="space-y-2">
-                    <a th:href="@{/admin/dashboard}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-                        <i class="fa-solid fa-grip text-xl"></i><p>Dashboard</p>
-                    </a>
-                    <a th:href="@{/admin/staff}" class="block py-2 px-4 rounded hover:bg-blue-100 font-bold flex gap-2 items-center">
-                        <i class="fa-solid fa-hospital-user text-xl"></i><p>Staff</p>
-                    </a>
-                    <a th:href="@{/admin/patients}" class="block py-2 px-4 rounded hover:bg-blue-100 text-blue-600 flex gap-2 items-center">
-                        <i class="fa-solid fa-bed-pulse text-xl"></i><p>Patients</p>
-                    </a>
-                    <a th:href="@{/admin/appointments}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-                        <i class="fa-solid fa-calendar-week text-xl"></i><p>Appointments</p>
-                    </a>
-		            <a th:href="@{/admin/info}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-		               <i class="fa-solid fa-circle-info text-xl"></i><p>Info</p>
-		            </a>
-                </nav>
-            </div>
-        </aside>
-    </div>
+  <div th:replace="~{/fragments/sideBar :: sidebar}"></div>
+
 
     <!-- MAIN CONTENT -->
     <div class="col-span-4 px-6">

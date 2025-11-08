@@ -41,7 +41,7 @@ public class CommonStaffController {
     // OTP vala Part starts
     @PostMapping("/send-otp")
     public String sendOtp(@RequestParam String email, @RequestParam String role, Model model) {
-        if (role == null || role.isEmpty()){
+        if (role == null || role.isEmpty()) {
             role = "Staff";
         }
         try {
@@ -58,6 +58,9 @@ public class CommonStaffController {
             boolean roleMatches = false;
 
             switch (role.toLowerCase()) {
+                case "admin":
+                    roleMatches = true;
+                    break;
                 case "doctor":
                     roleMatches = staff instanceof Doctor;
                     break;
@@ -153,11 +156,14 @@ public class CommonStaffController {
 
         StaffAuth staffAuth = staffAuthService.getAuthByEmail(username);
 
-        if (staffAuth != null && new BCryptPasswordEncoder().matches(password, staffAuth.getPassword())) {
+        if (staffAuth != null) {
             Staff staff = staffAuth.getStaff();
             boolean roleMatches = false;
 
             switch (role.toLowerCase()) {
+                case "admin":
+                    roleMatches = true;
+                    break;
                 case "doctor":
                     roleMatches = staff instanceof Doctor;
                     break;
@@ -169,26 +175,39 @@ public class CommonStaffController {
                     break;
             }
 
-            if (!roleMatches) {
-                model.addAttribute("error", "Invalid role for this account!");
+            // ✅ Password check: admin plain, others BCrypt
+            boolean passwordMatches;
+            if (role.equalsIgnoreCase("admin")) {
+                passwordMatches = staffAuth.getPassword().equals(password); // plain text for admin
+            } else {
+                passwordMatches = new BCryptPasswordEncoder().matches(password, staffAuth.getPassword());
+            }
+
+            if (!roleMatches || !passwordMatches) {
+                model.addAttribute("error", "Invalid email or password!");
                 return "staffs/commonLogin";
             }
 
             session.setAttribute("loggedInStaff", staff);
-            session.setAttribute("role", role);
+            session.setAttribute("role", capitalize(role));
 
-            Long staffId = staff.getID();
+            Long staffId = (staff != null) ? staff.getID() : 0L; // admin can have dummy ID
+
             if (staff instanceof Doctor)
                 return "redirect:/doctor/dashboard/" + staffId;
             if (staff instanceof Nurse)
                 return "redirect:/nurse/dashboard/" + staffId;
             if (staff instanceof Receptionist)
-                return "redirect:/reception/dashboard/" + staffId;
+                return "redirect:/receptionist/dashboard/" + staffId;
+            if (role.equalsIgnoreCase("admin"))
+                return "redirect:/admin/dashboard";
+
             return "redirect:/staff/dashboard/" + staffId;
         } else {
             model.addAttribute("error", "Invalid email or password!");
             return "staffs/commonLogin";
         }
+
     }
 
     private String capitalize(String text) {
