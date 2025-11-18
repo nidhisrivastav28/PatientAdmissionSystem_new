@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <title>My Profile</title>
+</head>
+<body class="w-screen h-screen grid grid-cols-5 gap-8 p-4 font-poppins">
+
+    <!-- SIDEBAR -->
+    <div th:replace="~{fragments/sidebar :: sidebar}" class="w-64 bg-white shadow-lg min-h-screen fixed md:relative z-10"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="col-span-4 bg-gray-50 p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-6">My Profile</h1>
+
+        <!-- Profile Info -->
+        <div class="flex gap-6 items-center mb-8">
+            <!-- Profile Picture -->
+            <div class="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center text-gray-700 text-3xl">
+                <i class="fa-regular fa-user"></i>
+            </div>
+
+            <!-- Details -->
+            <div class="space-y-2">
+                <p><span class="font-semibold">Name:</span> <span th:text="${patient.pname}">--</span></p>
+                <p><span class="font-semibold">Email:</span> <span th:text="${patient.pemail}">--</span></p>
+                <p><span class="font-semibold">Phone:</span> <span th:text="${patient.pphnno}">--</span></p>
+                <p><span class="font-semibold">Date of Birth(DOB):</span> <span th:text="${patient.pdob}">--</span></p>
+                <p><span class="font-semibold">Gender:</span> <span th:text="${patient.pgender}">--</span></p>
+            </div>
+        </div>
+
+        <!-- Edit Button -->
+        <div>
+            <a th:href="@{/patient/profile/edit/{id}(id=${patient.id})}" 
+               class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                Edit Profile
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

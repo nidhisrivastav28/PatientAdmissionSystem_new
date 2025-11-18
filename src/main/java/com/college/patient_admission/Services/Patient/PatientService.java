@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.college.patient_admission.Models.Patient.Patient;
+// import com.college.patient_admission.Repository.AppointmentRepo;
 import com.college.patient_admission.Repository.Patient.PatientRepo;
 
 @Service
@@ -13,6 +14,19 @@ public class PatientService {
 
     @Autowired
     private PatientRepo patientRepo;
+
+    @Autowired(required = false)
+    // private AppointmentRepo appointmentRepo;
+
+    // Not present in current code but needed for completeness
+    // @Autowired(required = false)
+    // private BillRepo billRepo;
+    
+    // @Autowired(required = false)
+    // private ReportRepo reportRepo;
+
+    // @Autowired(required = false)
+    // private PrescriptionRepo prescriptionRepo;
 
     // Registration Method
     public Patient registerPatient(Patient patient, String cpswd) {
@@ -31,27 +45,39 @@ public class PatientService {
     }
 
     // Login Validation
-    public Patient validateUser(String email, String pswd){
+    public Patient validateUser(String email, String pswd) {
         // Fetch patient by email
         Patient user = patientRepo.findByPemail(email).orElse(null);
 
         // Check password
-        if(user != null && user.getPpswd().equals(pswd)){
+        if (user != null && user.getPpswd().equals(pswd)) {
             return user;
         }
         return null;
     }
-    
+
+    // Get Patient by ID
     public Patient getPatientById(Long id) {
-		return patientRepo.findById(id).orElseThrow();
-	}
-    
-    public long getPatientCount() { return patientRepo.count(); }
-    
-    //CHANGE METHOD FOR PATIENTS
-    public List<Patient> getAllPatients(){
-    	return patientRepo.findAll();
+        return patientRepo.findById(id).orElseThrow(null);
     }
 
+    public Object getRecentAppointments(Long patientId) {
+        // abhi koi logic nahi (future ke liye placeholder)
+        return null;
+    }
+
+    public Object getPendingBills(Long patientId) {
+        // abhi koi logic nahi (future ke liye placeholder)
+        return null;
+    }
+    // Get Patient Count
+    public long getPatientCount() {
+        return patientRepo.count();
+    }
+
+    // CHANGE METHOD FOR PATIENTS
+    public List<Patient> getAllPatients() {
+        return patientRepo.findAll();
+    }
 
 }

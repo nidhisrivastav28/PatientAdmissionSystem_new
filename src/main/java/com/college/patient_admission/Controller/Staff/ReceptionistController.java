@@ -59,7 +59,7 @@ public class ReceptionistController {
 			model.addAttribute("error", "Please login to access the Receptionist Dashboard.");
 			return "staffs/commonLogin";
 		}
-
+ 
 		model.addAttribute("session", session);
 
 		StaffAuth receptionist = staffAuthService.getAuthByStaffById(id);

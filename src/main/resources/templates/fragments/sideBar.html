@@ -3,7 +3,7 @@
 <!-- Sidebar Fragment -->
 <div th:fragment="sidebar">
     <!-- ADMIN SIDEBAR -->
-    <div th:if="${session.role.toLowerCase()  == 'admin'}" class="col-span-1 flex" id="sidebar">
+    <div th:if="${session?.role != null and session.role.toLowerCase()  == 'admin'}" class="col-span-1 flex" id="sidebar">
         <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
             <div class="py-6">
                 <div class="flex items-center mb-6">
@@ -55,7 +55,7 @@
     </div>
 
     <!-- DOCTOR SIDEBAR -->
-    <div th:if="${session.role.toLowerCase() == 'doctor'}" class="col-span-1 flex" id="sidebar">
+    <div th:if="${session?.role != null and session.role.toLowerCase() == 'doctor'}" class="col-span-1 flex" id="sidebar">
         <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
             <div class="py-6">
                 <div class="flex items-center mb-6">
@@ -107,7 +107,7 @@
     </div>
 
     <!-- NURSE SIDEBAR -->
-    <div th:if="${session.role.toLowerCase() == 'nurse'}" class="col-span-1 flex" id="sidebar">
+    <div th:if="${session?.role != null and session.role.toLowerCase() == 'nurse'}" class="col-span-1 flex" id="sidebar">
         <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
             <div class="py-6">
                 <div class="flex items-center mb-6">
@@ -160,7 +160,7 @@
     </div>
 
     <!-- RECEPTIONIST SIDEBAR -->
-    <div th:if="${session.role.toLowerCase() == 'receptionist'}" class="col-span-1 flex" id="sidebar">
+    <div th:if="${session?.role != null and session.role.toLowerCase() == 'receptionist'}" class="col-span-1 flex" id="sidebar">
         <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
             <div class="py-6">
                 <div class="flex items-center mb-6">
@@ -213,58 +213,85 @@
         </aside>
     </div>
 
-    
+
     <!-- PATIENT SIDEBAR -->
-    <!-- <div class="col-span-1 flex" id="sidebar">
-        <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
+    <div th:if="${session?.role != null and session.role.toLowerCase() == 'patient'}" class="flex">
+        <!-- Toggle Button (Mobile) -->
+        <button class="md:hidden fixed top-4 left-4 bg-blue-500 text-white p-2 rounded z-50" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <aside id="mobile-sidebar"
+            class="fixed md:static top-0 left-0 h-full md:h-auto w-64 bg-white shadow-lg pl-3 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-40 overflow-y-auto">
+
             <div class="py-6">
+                <!-- Profile Section -->
                 <div class="flex items-center mb-6">
                     <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-regular fa-user text-gray-700 text-xl"></i>
                     </div>
                     <div class="ml-4">
-                        <h1 class="text-xl font-bold my-2" th:text="${receptionistName}">--</h1>
-                        <p class="text-sm text-gray-500" th:text="${receptionistEmail}">--</p>
+                        <h1 th:text="${patient.pname}">--</h1>
+                        <p th:text="${patient.pemail}">--</p>
                     </div>
-                </div> -->
+                </div>
 
-                <!-- Logout btn -->
-                <!-- <div th:if="${session.loggedInStaff != null}">
-                    <a th:href="@{/receptionist/logout}"
+                <!-- Logout Button -->
+                <div>
+                    <a th:href="@{/patient/logout}"
                         class="w-full bg-blue-500 text-white py-2 rounded mb-6 block text-center">
                         Log out
                     </a>
                 </div>
 
-
+                <!-- Sidebar Navigation -->
                 <nav class="space-y-2">
-                    <a th:href="@{/receptionist/dashboard/{id}(id=${receptionistId})}"
+                    <a th:href="@{/patient/dashboard/{id}(id=${patient.id})}"
                         class="block py-2 px-4 rounded hover:bg-blue-100 font-bold text-blue-600 flex gap-2 items-center">
                         <i class="fa-solid fa-grip text-xl"></i>
                         <p>Dashboard</p>
                     </a>
-                    <a th:href="@{/receptionist/patients/{id}(id=${receptionistId})}"
-                        class="block py-2 px-4 rounded hover:bg-blue-100 font-medium flex gap-2 items-center">
-                        <i class="fa-solid fa-bed-pulse text-xl"></i>
-                        <p>Patients</p>
-                    </a>
-                    <a th:href="@{/receptionist/appointments/{id}(id=${receptionistId})}"
-                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-                        <i class="fa-solid fa-calendar-week text-xl"></i>
+
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                        <i class="fa-solid fa-calendar-check text-xl"></i>
                         <p>Appointments</p>
                     </a>
-                    <a th:href="@{/receptionist/aboutme/{id}(id=${receptionistId})}"
-                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-                        <i class="fa-solid fa-address-card"></i>
-                        <p>About Me</p>
+
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                        <i class="fa-solid fa-pills text-xl"></i>
+                        <p>Prescriptions</p>
                     </a>
-                    <a th:href="@{/receptionist/info/{id}(id=${receptionistId})}"
-                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
-                        <i class="fa-solid fa-circle-info text-xl"></i>
-                        <p>Info</p>
+
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                        <i class="fa-solid fa-file-medical text-xl"></i>
+                        <p>Medical Reports</p>
+                    </a>
+
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                        <i class="fa-solid fa-wallet text-xl"></i>
+                        <p>Billing & Payments</p>
+                    </a>
+
+                    <a th:href="@{/patient/profile/{id}(id=${patient.id})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                        <i class="fa-solid fa-user-gear text-xl"></i>
+                        <p>My Profile</p>
+                    </a>
+
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                        <i class="fa-solid fa-comment-dots text-xl"></i>
+                        <p>Feedback</p>
                     </a>
                 </nav>
             </div>
         </aside>
     </div>
-</div> -->
+</div>
+
+<script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+    </script>
+<!-- End of Sidebar Fragment -->
