@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.college.patient_admission.Models.Appointment;
 import com.college.patient_admission.Models.Patient.Patient;
+import com.college.patient_admission.Repository.AppointmentRepo;
 // import com.college.patient_admission.Repository.AppointmentRepo;
 import com.college.patient_admission.Repository.Patient.PatientRepo;
 
@@ -16,12 +18,16 @@ public class PatientService {
     private PatientRepo patientRepo;
 
     @Autowired(required = false)
-    // private AppointmentRepo appointmentRepo;
+    private AppointmentRepo appointmentRepo;
+
+    public List<Appointment> getAppointmentsByPatient(Long patientId) {
+        return appointmentRepo.findByPatient_Id(patientId);
+    }
 
     // Not present in current code but needed for completeness
     // @Autowired(required = false)
     // private BillRepo billRepo;
-    
+
     // @Autowired(required = false)
     // private ReportRepo reportRepo;
 
@@ -67,9 +73,10 @@ public class PatientService {
     }
 
     public Object getPendingBills(Long patientId) {
-        // abhi koi logic nahi (future ke liye placeholder)
+        // abhi koi logic nahi (future ke liye place holder)
         return null;
     }
+
     // Get Patient Count
     public long getPatientCount() {
         return patientRepo.count();
@@ -78,6 +85,10 @@ public class PatientService {
     // CHANGE METHOD FOR PATIENTS
     public List<Patient> getAllPatients() {
         return patientRepo.findAll();
+    }
+
+    public Patient findById(Long id) {
+        return patientRepo.findById(id).orElse(null);
     }
 
 }

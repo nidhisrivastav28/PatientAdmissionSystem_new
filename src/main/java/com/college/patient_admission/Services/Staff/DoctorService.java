@@ -1,6 +1,7 @@
 package com.college.patient_admission.Services.Staff;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,4 +79,9 @@ public class DoctorService {
             staffRepo.save(staff); // optional; save() on managed entity is safe but not required
         }
     }
+
+    public List<Doctor> getAllDoctors() {
+        return doctorRepo.findAll();
+    }
+    
 }

@@ -1,13 +1,19 @@
 package com.college.patient_admission.Controller.Patient;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.college.patient_admission.Models.Gender;
 import com.college.patient_admission.Models.Patient.Patient;
+import com.college.patient_admission.Models.Staff.Doctor;
 import com.college.patient_admission.Services.Patient.PatientService;
+import com.college.patient_admission.Services.Staff.DoctorService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -17,6 +23,9 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    DoctorService doctorService;
 
     // Login + Signup page
     @GetMapping("/login")
@@ -83,34 +92,48 @@ public class PatientController {
     }
 
     // Appointments page
-    // @GetMapping("/appointments/{id}")
-    // public String appointments(@PathVariable Long id, Model model) {
-    // Patient patient = patientService.findById(id);
-    // if (patient == null) {
-    // return "redirect:/patient/login";
-    // }
+    @GetMapping("/appointments/{id}")
+    public String appointments(@PathVariable Long id, Model model) {
 
-    // model.addAttribute("patient", patient);
-    // model.addAttribute("appointments",
-    // patientService.getAppointmentsByPatient(id));
+        Patient patient = patientService.findById(id);
+        if (patient == null) {
+            return "redirect:/patient/login";
+        }
 
-    // return "patient/appointments";
-    // }
+        model.addAttribute("patient", patient);
+        model.addAttribute("appointments", patientService.getAppointmentsByPatient(id));
+
+        // For Real doctor list from DB bt its not wrking
+        List<Doctor> doctors = doctorService.getAllDoctors();
+        model.addAttribute("doctors", doctors);
+
+        return "patient/appointments";
+    }
 
     // Prescriptions page
-    // @GetMapping("/prescriptions/{id}")
-    // public String prescriptions(@PathVariable Long id, Model model) {
-    // Patient patient = patientService.findById(id);
-    // if (patient == null) {
-    // return "redirect:/patient/login";
-    // }
+     @GetMapping("/report/{id}")
+    public String getPatientReport(@PathVariable Long id, Model model) {
 
-    // model.addAttribute("patient", patient);
-    // model.addAttribute("prescriptions",
-    // patientService.getPrescriptionsByPatient(id));
+        Patient patient = patientService.findById(id);
+        if (patient == null) {
+            return "redirect:/patient/login";
+        }
+        // Fetch Prescription
+        // Prescription prescription = prescriptionService.getByPatientId(patientId);
 
-    // return "patient/prescriptions";
-    // }
+        // Fetch Medical Report
+        // MedicalReport report = medicalReportService.getByPatientId(patientId);
+
+        // Add data to model
+        // model.addAttribute("prescription", prescription);
+        // model.addAttribute("report", report);
+
+        // For sidebar active highlight
+         model.addAttribute("patientId", id);
+        //  model.addAttribute("activePage", "prescriptions");
+
+        return "patient/report"; // HTML page name
+    }
 
     // Reports page
     // @GetMapping("/reports/{id}")
@@ -142,7 +165,7 @@ public class PatientController {
         if (patient == null) {
             return "redirect:/patient/login";
         }
-        model.addAttribute("patient", patient); 
+        model.addAttribute("patient", patient);
         return "patient/profile";
     }
 

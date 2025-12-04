@@ -3,7 +3,8 @@
 <!-- Sidebar Fragment -->
 <div th:fragment="sidebar">
     <!-- ADMIN SIDEBAR -->
-    <div th:if="${session?.role != null and session.role.toLowerCase()  == 'admin'}" class="col-span-1 flex" id="sidebar">
+    <div th:if="${session?.role != null and session.role.toLowerCase()  == 'admin'}" class="col-span-1 flex"
+        id="sidebar">
         <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
             <div class="py-6">
                 <div class="flex items-center mb-6">
@@ -55,7 +56,8 @@
     </div>
 
     <!-- DOCTOR SIDEBAR -->
-    <div th:if="${session?.role != null and session.role.toLowerCase() == 'doctor'}" class="col-span-1 flex" id="sidebar">
+    <div th:if="${session?.role != null and session.role.toLowerCase() == 'doctor'}" class="col-span-1 flex"
+        id="sidebar">
         <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
             <div class="py-6">
                 <div class="flex items-center mb-6">
@@ -107,7 +109,8 @@
     </div>
 
     <!-- NURSE SIDEBAR -->
-    <div th:if="${session?.role != null and session.role.toLowerCase() == 'nurse'}" class="col-span-1 flex" id="sidebar">
+    <div th:if="${session?.role != null and session.role.toLowerCase() == 'nurse'}" class="col-span-1 flex"
+        id="sidebar">
         <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
             <div class="py-6">
                 <div class="flex items-center mb-6">
@@ -160,7 +163,8 @@
     </div>
 
     <!-- RECEPTIONIST SIDEBAR -->
-    <div th:if="${session?.role != null and session.role.toLowerCase() == 'receptionist'}" class="col-span-1 flex" id="sidebar">
+    <div th:if="${session?.role != null and session.role.toLowerCase() == 'receptionist'}" class="col-span-1 flex"
+        id="sidebar">
         <aside class="w-64 bg-white shadow h-screen overflow-hidden pl-3">
             <div class="py-6">
                 <div class="flex items-center mb-6">
@@ -197,6 +201,11 @@
                         class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
                         <i class="fa-solid fa-calendar-week text-xl"></i>
                         <p>Appointments</p>
+                    </a>
+                    <a href="#"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                        <!-- <i class="fa-solid fa-address-card"></i> -->
+                        <p>Billing & Payments</p>
                     </a>
                     <a th:href="@{/receptionist/aboutme/{id}(id=${receptionistId})}"
                         class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
@@ -248,50 +257,75 @@
                 <!-- Sidebar Navigation -->
                 <nav class="space-y-2">
                     <a th:href="@{/patient/dashboard/{id}(id=${patient.id})}"
-                        class="block py-2 px-4 rounded hover:bg-blue-100 font-bold text-blue-600 flex gap-2 items-center">
+                        th:classappend="${activePage == 'dashboard'} ? ' bg-blue-100 text-blue-600 font-bold' : ''"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
                         <i class="fa-solid fa-grip text-xl"></i>
                         <p>Dashboard</p>
                     </a>
 
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                    <a th:href="@{/patient/appointments/{id}(id=${patient.id})}"
+                        th:classappend="${activePage == 'appointments'} ? ' bg-blue-100 text-blue-600 font-bold' : ''"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
                         <i class="fa-solid fa-calendar-check text-xl"></i>
                         <p>Appointments</p>
                     </a>
 
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+
+                    <!-- <a th:href="@{/patient/appointments/{id}(id=${patient.id})}"
+                        th:classappend="${activePage == 'appointments'} ? ' bg-blue-100 text-blue-600 font-bold' : ''"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                        <i class="fa-solid fa-calendar-check text-xl"></i>
+                        <p>Appointments</p>
+                    </a> -->
+
+                    <a th:href="@{/patient/report/{id}(id=${patient.id})}"
+                        th:classappend="${activePage == 'prescriptions'} ? ' bg-blue-100 text-blue-600 font-bold' : ''"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
                         <i class="fa-solid fa-pills text-xl"></i>
-                        <p>Prescriptions</p>
+                        <p>Prescriptions/Medical Reports</p>
                     </a>
 
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+
+                    
+                    <!-- <a href="#"
+                        th:classappend="${activePage == 'reports'} ? ' bg-blue-100 text-blue-600 font-bold' : ''"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
                         <i class="fa-solid fa-file-medical text-xl"></i>
                         <p>Medical Reports</p>
-                    </a>
+                    </a> -->
 
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                    <a href="#"
+                        th:classappend="${activePage == 'billing'} ? ' bg-blue-100 text-blue-600 font-bold' : ''"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
                         <i class="fa-solid fa-wallet text-xl"></i>
                         <p>Billing & Payments</p>
                     </a>
 
-                    <a th:href="@{/patient/profile/{id}(id=${patient.id})}" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                    <a th:href="@{/patient/profile/{id}(id=${patient.id})}"
+                        th:classappend="${activePage == 'profile'} ? ' bg-blue-100 text-blue-600 font-bold' : ''"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
                         <i class="fa-solid fa-user-gear text-xl"></i>
                         <p>My Profile</p>
                     </a>
 
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
+                    <a href="#"
+                        th:classappend="${activePage == 'feedback'} ? ' bg-blue-100 text-blue-600 font-bold' : ''"
+                        class="block py-2 px-4 rounded hover:bg-blue-100 flex gap-2 items-center">
                         <i class="fa-solid fa-comment-dots text-xl"></i>
                         <p>Feedback</p>
                     </a>
+
                 </nav>
+
             </div>
         </aside>
     </div>
 </div>
 
 <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('mobile-sidebar');
-            sidebar.classList.toggle('-translate-x-full');
-        }
-    </script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('mobile-sidebar');
+        sidebar.classList.toggle('-translate-x-full');
+    }
+</script>
 <!-- End of Sidebar Fragment -->

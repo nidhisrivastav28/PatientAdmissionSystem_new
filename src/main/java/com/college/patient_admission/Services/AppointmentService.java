@@ -83,4 +83,8 @@ public class AppointmentService {
 	public List<Appointment> getAppointmentsByDoctorId(Long id){
 		return appointmentRepo.findByDoctor_ID(id);
 	}
+
+	public List<Appointment> getAppointmentsForPatient(Long patientId) {
+    return appointmentRepo.findByPatient_Id(patientId);
+}
 }

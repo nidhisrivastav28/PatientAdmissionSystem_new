@@ -13,8 +13,7 @@
 <body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
 
     <!-- SIDEBAR -->
-    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
-
+    <div th:replace="~{fragments/sidebar :: sidebar}" class="w-64 bg-white shadow-lg min-h-screen fixed md:relative z-10"></div>
 
     <!-- MAIN CONTENT -->
     <div class="col-span-4">
@@ -28,7 +27,7 @@
                 <h3 class="text-lg font-semibold mb-4">Welcome!</h3>
                 <h1 class="text-3xl font-bold my-2 doctor-name" th:text="${patient.pname}">--</h1>
                 <p class="text-sm mb-4 max-w-xl">
-                    Thanks for joining us. You can monitor daily activities here!!
+                    Thanks for joining us. You can monitor your daily activities here!!
                 </p>
             </div>
 
