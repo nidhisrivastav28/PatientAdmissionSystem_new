@@ -3,14 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Reports</title>
+    <title>Reports & Prescriptions</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="w-screen h-screen grid grid-cols-5 gap-8 p-4 bg-gray-100" style="font-family: 'Poppins', sans-serif;">
 
     <!-- SIDEBAR -->
-    <div th:replace="~{fragments/sidebar :: sidebar}" class="w-64 bg-white shadow-lg min-h-screen fixed md:relative z-10"></div>
+    <div th:replace="~{fragments/sidebar :: sidebar}"
+        class="w-64 bg-white shadow-lg min-h-screen fixed md:relative z-10"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="col-span-4 ml-64 md:ml-0 p-8" x-data="{ tab: 'reports' }">
+
+        <!-- TITLE -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-800 tracking-wide">
+                My <span class="text-blue-600">Reports</span>
+            </h1>
+            <p class="text-gray-500 mt-1">View your medical reports and prescriptions easily</p>
+        </div>
+
+        <!-- TOP BUTTONS -->
+        <div class="flex gap-5 mb-10">
+
+            <!-- Medical Reports -->
+            <button @click="tab='reports'"
+                :class="tab=='reports' ? 'bg-blue-600 text-white' : 'bg-white text-gray-800'"
+                class="
+                    flex items-center gap-3 px-6 py-3 
+                    shadow-lg border border-gray-200 
+                    rounded-xl font-semibold
+                    hover:shadow-xl hover:-translate-y-1
+                    transition-all duration-300
+                ">
+                <i class="fa-solid fa-file-medical text-xl"></i>
+                Medical Reports
+            </button>
+
+            <!-- Prescriptions -->
+            <button @click="tab='prescriptions'"
+                :class="tab=='prescriptions' ? 'bg-blue-600 text-white' : 'bg-white text-gray-800'"
+                class="
+                    flex items-center gap-3 px-6 py-3 
+                    shadow-lg border border-gray-200 
+                    rounded-xl font-semibold
+                    hover:shadow-xl hover:-translate-y-1
+                    transition-all duration-300
+                ">
+                <i class="fa-solid fa-prescription-bottle text-xl"></i>
+                Prescriptions
+            </button>
+        </div>
+
+        <!-- MEDICAL REPORTS SECTION -->
+        <div x-show="tab=='reports'" class="bg-white rounded-xl p-10 shadow-lg border border-gray-200 min-h-64">
+
+            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Medical Reports</h2>
+
+            <!-- IF NO REPORTS -->
+            <div class="text-center py-10 text-gray-500 text-lg" th:if="${#lists.isEmpty(reports)}">
+                <i class="fa-solid fa-file-circle-xmark text-5xl text-gray-400 mb-4"></i>
+                <p>No medical reports available.</p>
+            </div>
+
+            <!-- REPORT LIST -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" th:each="rep : ${reports}">
+                <div class="p-5 border rounded-xl shadow hover:shadow-lg transition-all bg-gray-50">
+                    <h3 class="font-semibold text-gray-800" th:text="${rep.reportType}"></h3>
+                    <p class="text-gray-600 text-sm mt-1" th:text="${rep.date}"></p>
+
+                    <a th:href="@{/patient/report/view/{id}(id=${rep.id})}"
+                        class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        View Report
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PRESCRIPTIONS SECTION -->
+        <div x-show="tab=='prescriptions'" class="bg-white rounded-xl p-10 shadow-lg border border-gray-200 min-h-64">
+
+            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Prescriptions</h2>
+
+            <!-- IF NO PRESCRIPTIONS -->
+            <div class="text-center py-10 text-gray-500 text-lg" th:if="${#lists.isEmpty(prescriptions)}">
+                <i class="fa-solid fa-prescription-bottle-medical text-5xl text-gray-400 mb-4"></i>
+                <p>No prescriptions available.</p>
+            </div>
+
+            <!-- PRESCRIPTION LIST -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" th:each="pre : ${prescriptions}">
+                <div class="p-5 border rounded-xl shadow hover:shadow-lg transition-all bg-gray-50">
+                    <h3 class="font-semibold text-gray-800" th:text="${pre.description}"></h3>
+                    <p class="text-gray-600 text-sm mt-1" th:text="${pre.date}"></p>
+
+                    <a th:href="@{/patient/prescription/view/{id}(id=${pre.id})}"
+                        class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        View Prescription
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 </body>
 </html>

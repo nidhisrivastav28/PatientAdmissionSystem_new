@@ -87,6 +87,7 @@ public class PatientController {
         // Now add both to model
         model.addAttribute("patient", patient);
         model.addAttribute("patientId", patient.getId());
+        model.addAttribute("activePage", "dashboard");
 
         return "patient/dashboard";
     }
@@ -106,12 +107,13 @@ public class PatientController {
         // For Real doctor list from DB bt its not wrking
         List<Doctor> doctors = doctorService.getAllDoctors();
         model.addAttribute("doctors", doctors);
+        model.addAttribute("activePage", "appointments");
 
         return "patient/appointments";
     }
 
     // Prescriptions page
-     @GetMapping("/report/{id}")
+    @GetMapping("/report/{id}")
     public String getPatientReport(@PathVariable Long id, Model model) {
 
         Patient patient = patientService.findById(id);
@@ -129,35 +131,25 @@ public class PatientController {
         // model.addAttribute("report", report);
 
         // For sidebar active highlight
-         model.addAttribute("patientId", id);
-        //  model.addAttribute("activePage", "prescriptions");
+        model.addAttribute("patient", patient);
+        model.addAttribute("activePage", "prescriptions");
 
         return "patient/report"; // HTML page name
     }
 
-    // Reports page
-    // @GetMapping("/reports/{id}")
-    // public String reports(@PathVariable Long id, Model model) {
-    // Patient patient = patientService.findById(id);
-    // if (patient == null) {
-    // return "redirect:/patient/login";
-    // }
-    // model.addAttribute("patient", patient);
-    // model.addAttribute("reports", patientService.getReportsByPatient(id));
-    // return "patient/reports";
-    // }
-
     // Billing page
-    // @GetMapping("/billing/{id}")
-    // public String billing(@PathVariable Long id, Model model) {
-    // Patient patient = patientService.findById(id);
-    // if (patient == null) {
-    // return "redirect:/patient/login";
-    // }
-    // model.addAttribute("patient", patient);
-    // model.addAttribute("bills", patientService.getBillsByPatient(id));
-    // return "patient/billing";
-    // }
+    @GetMapping("/billing/{id}")
+    public String billing(@PathVariable Long id, Model model) {
+
+        Patient patient = patientService.findById(id);
+        if (patient == null) {
+            return "redirect:/patient/login";
+        }
+        model.addAttribute("patient", patient);
+        // model.addAttribute("bills", patientService.getBillsByPatient(id));
+        model.addAttribute("activePage", "billing");
+        return "patient/billing";
+    }
 
     @GetMapping("/profile/{id}")
     public String profile(@PathVariable Long id, Model model) {
@@ -166,19 +158,21 @@ public class PatientController {
             return "redirect:/patient/login";
         }
         model.addAttribute("patient", patient);
+        model.addAttribute("activePage", "profile");
         return "patient/profile";
     }
 
     // Feedback page
-    // @GetMapping("/feedback/{id}")
-    // public String feedback(@PathVariable Long id, Model model) {
-    // Patient patient = patientService.findById(id);
-    // if (patient == null) {
-    // return "redirect:/patient/login";
-    // }
-    // model.addAttribute("patient", patient);
-    // return "patient/feedback";
-    // }
+    @GetMapping("/feedback/{id}")
+    public String feedback(@PathVariable Long id, Model model) {
+        Patient patient = patientService.findById(id);
+        if (patient == null) {
+            return "redirect:/patient/login";
+        }
+        model.addAttribute("patient", patient);
+        model.addAttribute("activePage", "feedback");
+        return "patient/feedback";
+    }
 
     // Logout
     @GetMapping("/logout")
