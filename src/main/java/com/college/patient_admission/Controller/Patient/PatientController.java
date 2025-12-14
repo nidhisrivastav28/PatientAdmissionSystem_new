@@ -1,17 +1,26 @@
 package com.college.patient_admission.Controller.Patient;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 // import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.college.patient_admission.Models.Appointment;
 import com.college.patient_admission.Models.Gender;
 import com.college.patient_admission.Models.Patient.Patient;
 import com.college.patient_admission.Models.Staff.Doctor;
+import com.college.patient_admission.Repository.AppointmentRepo;
+import com.college.patient_admission.Repository.Patient.PatientRepo;
+import com.college.patient_admission.Repository.Staff.DoctorRepo;
+import com.college.patient_admission.Services.AppointmentService;
 import com.college.patient_admission.Services.Patient.PatientService;
 import com.college.patient_admission.Services.Staff.DoctorService;
 
@@ -23,6 +32,18 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private AppointmentRepo appointmentRepo;
+
+    @Autowired
+    private DoctorRepo doctorRepo;
+
+    @Autowired
+    private PatientRepo patientRepo;
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Autowired
     DoctorService doctorService;
@@ -106,10 +127,29 @@ public class PatientController {
 
         // For Real doctor list from DB bt its not wrking
         List<Doctor> doctors = doctorService.getAllDoctors();
+        if (doctors == null) {
+            doctors = new ArrayList<>();
+        }
         model.addAttribute("doctors", doctors);
         model.addAttribute("activePage", "appointments");
 
         return "patient/appointments";
+    }
+
+    @PostMapping("/appointments/request")
+    public String requestAppointment(
+            @RequestParam Long patientId,
+            @RequestParam Long doctorId,
+            @RequestParam String appointmentDate,
+            @RequestParam String from,
+            @RequestParam String reason,
+            RedirectAttributes redirectAttributes) {
+
+        appointmentService.saveRequest(patientId, doctorId, appointmentDate, from, reason);
+
+        redirectAttributes.addFlashAttribute("successMessage", "A new request sent to the hospital!");
+
+        return "redirect:/patient/appointments/" + patientId;
     }
 
     // Prescriptions page

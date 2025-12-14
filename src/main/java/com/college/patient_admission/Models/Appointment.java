@@ -22,34 +22,38 @@ public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ID;
-	
+
 	@Column(nullable = false)
 	private LocalDate createdOn;
-	
+
 	@Column(nullable = false)
 	private LocalDate appointmentDate;
-	
+
 	@Column(name = "from_time", nullable = false)
 	private LocalTime from;
-	
+
 	@Column(name = "to_time", nullable = false)
 	private LocalTime to;
-	
+
 	@Column(nullable = false)
 	private String reason;
 
-	@ManyToOne
-    @JoinColumn(name = "doctor_id")
-	@JsonBackReference
-    private Doctor doctor;
+	@Column(nullable = false)
+	private String status = "PENDING";
 
 	@ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
-	
-	public Appointment() {}
-	
-	public Appointment(LocalDate createdOn, LocalDate appointmentDate, LocalTime from, 
+	@JoinColumn(name = "doctor_id")
+	@JsonBackReference
+	private Doctor doctor;
+
+	@ManyToOne
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
+
+	public Appointment() {
+	}
+
+	public Appointment(LocalDate createdOn, LocalDate appointmentDate, LocalTime from,
 			LocalTime to, String reason, Doctor doctor, Patient patient) {
 		this.createdOn = createdOn;
 		this.appointmentDate = appointmentDate;
