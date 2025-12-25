@@ -84,7 +84,8 @@ public class ReceptionistController {
 		
 		List<Appointment> appointments = appointmentService.getAppointmentsByAppointmentDate(LocalDate.now());
 		model.addAttribute("appointments", appointments);
-
+		
+		model.addAttribute("activePage", "appointments");
 		return "receptionist/dashboard";
 	}
 	
@@ -97,6 +98,8 @@ public class ReceptionistController {
 		model.addAttribute("receptionistEmail", receptionist.getEmail());
 		
 		model.addAttribute("patients", patientService.getAllPatients());
+		
+		model.addAttribute("activePage", "appointments");
 		return "receptionist/patients";
 	}
 	
@@ -146,6 +149,7 @@ public class ReceptionistController {
 	    model.addAttribute("patients", patientDTOs);
 	    model.addAttribute("lastEndTimes", appointmentService.getLastEndTimePerDoctorPerDate());
 
+		model.addAttribute("activePage", "appointments");
 		return "receptionist/appointments";
 	}
 	
@@ -203,6 +207,8 @@ public class ReceptionistController {
 		model.addAttribute("receptionistEmail", receptionist.getEmail());
 		
 		model.addAttribute("receptionist", receptionistService.getReceptionistById(id));
+		
+		model.addAttribute("activePage", "about");
 		return "receptionist/aboutme";
 	}
 	
@@ -225,6 +231,7 @@ public class ReceptionistController {
 		model.addAttribute("receptionistName", receptionist.getStaff().getName());
 		model.addAttribute("receptionistEmail", receptionist.getEmail());
 		
+		model.addAttribute("activePage", "info");
 		return "receptionist/info";
 	}
 
@@ -232,6 +239,6 @@ public class ReceptionistController {
 	public String logout(HttpSession session, Model model) {
 		session.invalidate();
 		model.addAttribute("info", "Logged out successfully.");
-		return "staffs/commonLogin";
+		return "index";
 	}
 }

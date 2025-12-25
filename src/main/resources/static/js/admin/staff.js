@@ -11,9 +11,9 @@ tabs.forEach(tab => {
 
         tab.classList.add('text-blue-600', 'border-blue-500', 'font-medium');
         tab.classList.remove('text-gray-600', ' border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none');
-        
+
         const role = tab.dataset.role;
-        loadStaff(role); 
+        loadStaff(role);
     });
 });
 
@@ -55,7 +55,8 @@ function selectRole(role) {
                 <input type="text" id="specialization" name="specialisation" class="mt-1 block w-full px-3 border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none rounded-md shadow-sm" required />
                 <label class="block text-sm font-medium text-gray-700 mt-2">License Number</label>
                 <input type="text" id="license" name="licenseNumber" class="mt-1 block w-full px-3 border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none rounded-md shadow-sm" required />
-            `;
+        </div>
+                `;
             break;
         case 'NURSE':
             fields = `

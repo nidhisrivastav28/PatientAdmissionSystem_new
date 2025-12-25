@@ -16,7 +16,7 @@
         class="w-64 bg-white shadow-lg min-h-screen fixed md:relative z-10"></div>
 
     <!-- MAIN CONTENT -->
-    <div class="col-span-4 ml-64 md:ml-0 p-8" x-data="{ openModal: false }">
+     <div class="col-span-4 ml-64 md:ml-0 p-8" x-data="{ openModal:false, openPastModal:false }">
 
         <!-- PAGE TITLE -->
         <div class="mb-8">
@@ -29,7 +29,7 @@
         <!-- TOP BUTTONS -->
         <div class="flex gap-5 mb-10">
             <!-- Past Appointments -->
-            <button class="
+            <button @click="openPastModal = true" class="
                 flex items-center gap-3 px-6 py-3 
                 bg-white shadow-lg border border-gray-200 
                 rounded-xl
@@ -132,7 +132,55 @@
 
             </div>
         </div>
-        
+        <!-- PAST APPOINTMENTS MODAL -->
+        <div x-show="openPastModal" x-transition
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+
+            <div @click.away="openPastModal = false" class="bg-white rounded-xl p-6 w-full max-w-4xl shadow-lg">
+
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Past Appointments</h2>
+                    <button @click="openPastModal = false">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full border border-gray-200 rounded-lg">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Doctor</th>
+                                <th class="px-4 py-2 text-left">Date</th>
+                                <th class="px-4 py-2 text-left">Time</th>
+                                <th class="px-4 py-2 text-left">Reason</th>
+                                <th class="px-4 py-2 text-left">Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr th:each="app : ${appointments}" class="border-t">
+                                <td class="px-4 py-2" th:text="${app.doctor.name}"></td>
+                                <td class="px-4 py-2" th:text="${app.appointmentDate}"></td>
+                                <td class="px-4 py-2" th:text="${app.from + ' - ' + app.to}"></td>
+                                <td class="px-4 py-2" th:text="${app.reason}"></td>
+                                <td class="px-4 py-2">
+                                    <span th:text="${app.status}" class="px-2 py-1 rounded bg-gray-200 text-sm"></span>
+                                </td>
+                            </tr>
+
+                            <tr th:if="${#lists.isEmpty(appointments)}">
+                                <td colspan="5" class="text-center py-4 text-gray-500">
+                                    No past appointments found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+
 
     </div>
 

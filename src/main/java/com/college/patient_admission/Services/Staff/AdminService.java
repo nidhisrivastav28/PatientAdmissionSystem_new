@@ -87,7 +87,7 @@ public class AdminService {
     }
     
     @Transactional
-    public void updateStaff(Long staffId, Double salary, LocalDate endDate) {
+    public void updateStaff(Long staffId, Double salary, LocalDate endDate, String experience) {
         Staff staff = staffRepo.findById(staffId)
                 .orElseThrow(() -> new RuntimeException("Default admin not found"));
         boolean updated = false;
@@ -100,10 +100,15 @@ public class AdminService {
             updated = true;
         }
 
+        if (staff instanceof Doctor && experience != null) {
+            ((Doctor) staff).setExperience(experience);
+            updated = true;
+        }
         if (updated) {
             // If @Transactional, this line is optional:
             staffRepo.save(staff); // optional; save() on managed entity is safe but not required
         }
+
     }
 
 }

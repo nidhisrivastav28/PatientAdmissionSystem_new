@@ -77,10 +77,10 @@ public class CommonStaffController {
                 model.addAttribute("role", capitalize(role));
                 model.addAttribute("info", "You can visit to change your role");
                 model.addAttribute("role", capitalize(role));
-                return "staffs/commonLogin";
+                return "index";
             }
 
-            // ✅ Proceed with OTP only if role matches
+            // Proceed with OTP only if role matches
             if (staffAuth.getPassword() == null || staffAuth.getPassword().isEmpty()) {
                 generatedOtp = String.format("%06d", new Random().nextInt(900000));
 
@@ -175,7 +175,7 @@ public class CommonStaffController {
                     break;
             }
 
-            // ✅ Password check: admin plain, others BCrypt
+            // Password check: admin plain, others BCrypt
             boolean passwordMatches;
             if (role.equalsIgnoreCase("admin")) {
                 passwordMatches = staffAuth.getPassword().equals(password); // plain text for admin
@@ -205,7 +205,7 @@ public class CommonStaffController {
             return "redirect:/staff/dashboard/" + staffId;
         } else {
             model.addAttribute("error", "Invalid email or password!");
-            return "staffs/commonLogin";
+            return "index";
         }
 
     }

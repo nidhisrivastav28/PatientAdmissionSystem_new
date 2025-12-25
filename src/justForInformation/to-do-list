@@ -23,13 +23,24 @@
 # Pending: Connection of patient with other staffs
 # will be completed by next week
 -------------------------------------------------------------------------------------------------------------
-# 14-12-2025
-# FUTURE SCOPE                                                | ERROR / PROBLEMS
-# 1. Dynamic updation of doctor in patient's dashboard        |  After setting the new password for the 1st time, an extra page is shown
-#                                                             |  before redirecting to the login page.
-# 2. Prescription part                                        |  Appointment part in receptionist dashboard not working properly
+# 26-12-2025
+# FUTURE SCOPE                                       
+# 1. Adding appointments in Receptionist section      
+# 2. Prescription part                                  
 # 3. Medical part       
 # 4. Billing part                                    
+# 5. Full Nurese part
 -------------------------------------------------------------------------------------------------------------
 # FLOW OF PROJECT
+
+-------------------------------------------------------------------------------------------------------------
+# Nidhi's Part                                         | Paulami's Part
+# 1. login-logout authentication part                  | 1. 
+# 2. email verification part                           |
+# 3. password reset part                               |
+# 4. patient dashboard UI part                         |
+# 5. connecting patient with other staffs              |
+# 6. few changes done in staffs part                   |
+-------------------------------------------------------------------------------------------------------------
+
 

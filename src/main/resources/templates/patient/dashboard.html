@@ -90,9 +90,10 @@
 
             <!-- STATUS BOXES -->
             <div class="bg-white rounded-xl shadow p-6 mt-10 sm:mt-12 lg:mt-16">
-                <h2 class="text-xl font-semibold mb-4">Available Doctors</h2>
+                
+                <div class="w-full overflow-x-auto">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Available Doctors</h2>
 
-                <div class="w-full overflow-x-auto overflow-y-hidden block">
                     <table class="min-w-[700px] md:min-w-full border border-gray-200 rounded-lg overflow-hidden">
                         <thead class="bg-blue-600 text-white">
                             <tr>
@@ -105,10 +106,12 @@
                         </thead>
 
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-medium">Dr. A. Sharma</td>
-                                <td class="py-3 px-4">Cardiologist</td>
-                                <td class="py-3 px-4">10+ Years</td>
+                            <tr th:each="doctor : ${doctors}" class="hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium" th:text="'Dr. ' + ${doctor.name}">Dr. Name</td>
+                                <td class="py-3 px-4" th:text="${doctor.specialisation}">Specialization</td>
+                                <td class="py-3 px-4"
+                                    th:text="${doctor.experience != null ? doctor.experience + ' years' : 'Not Added'}">
+                                    Experience</td>
                                 <td class="py-3 px-4">
                                     <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm">
                                         Available
@@ -121,24 +124,6 @@
                                             Book Appointment
                                         </button>
                                     </a>
-
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-medium">Dr. R. Sen</td>
-                                <td class="py-3 px-4">Dermatologist</td>
-                                <td class="py-3 px-4">6+ Years</td>
-                                <td class="py-3 px-4">
-                                    <span class="px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm">
-                                        Not Available
-                                    </span>
-                                </td>
-                                <td class="py-3 px-4 text-center">
-                                    <button
-                                        class="px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed text-sm">
-                                        Unavailable
-                                    </button>
                                 </td>
                             </tr>
 
@@ -146,7 +131,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 

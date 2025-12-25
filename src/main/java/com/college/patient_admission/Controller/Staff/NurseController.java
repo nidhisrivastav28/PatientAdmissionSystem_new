@@ -53,7 +53,7 @@ public class NurseController {
 	public String showDashboard(@PathVariable Long id, Model model, HttpSession session) {
 		if(session.getAttribute("loggedInStaff") == null || session.getAttribute("role") == null || !session.getAttribute("role").equals("Nurse")) {
 			model.addAttribute("error", "Please login to access the Nurse Dashboard.");
-			return "staffs/commonLogin";
+			return "index";
 		}
 		
 		StaffAuth nurse = staffAuthService.getAuthByStaffById(id);
@@ -179,6 +179,6 @@ public class NurseController {
 	public String logout(HttpSession session, Model model) {
 		session.invalidate();
 		model.addAttribute("info", "Logged out successfully.");
-		return "staffs/commonLogin";
+		return "index";
 	}
 }

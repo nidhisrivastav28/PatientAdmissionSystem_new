@@ -65,7 +65,7 @@ public class AdminController {
 		|| session.getAttribute("role") == null 
 		|| !session.getAttribute("role").equals("Admin")) {
 			model.addAttribute("error", "Please login to access the Admin Dashboard.");
-			return "staffs/commonLogin";
+			return "index";
 		}
 
 		StaffAuth admin = adminService.getAdmin(); // transactional, gets default admin
@@ -97,7 +97,8 @@ public class AdminController {
 			// Nurse-specific
 			@RequestParam(required = false) String department, @RequestParam(required = false) Shift shift,
 			// Receptionist-specific
-			@RequestParam(required = false) String desk) {
+			@RequestParam(required = false) String desk,
+		@RequestParam(required = false) String experience) {
 		// Parse dates
 		LocalDate dobDate = LocalDate.parse(dob, DateTimeFormatter.ISO_DATE);
 		LocalDate start = LocalDate.now();
@@ -107,7 +108,7 @@ public class AdminController {
 		    case "DOCTOR": {
 		    	doctorService.register(
 		    		    name, email, phone, address, dobDate, gender, qualification, salary, start,
-		    		    specialisation, licenseNumber
+		    		    specialisation, licenseNumber, experience
 		    	);
 
 		        break;
@@ -229,13 +230,15 @@ public class AdminController {
 	@PostMapping("/staff/{id}/update")
 	public String updateStaffSalaryAndEndDate(@PathVariable Long id,
 			@RequestParam(required = false) Double salary,
-			@RequestParam(required = false) String endDate) {
+			@RequestParam(required = false) String endDate ,
+			@RequestParam(required = false) String experience) {
 		LocalDate end = null;
 		if (endDate != null && !endDate.isEmpty()) {
 			end = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE);
 		}
 
-		adminService.updateStaff(id, salary, end);
+
+		adminService.updateStaff(id, salary, end,experience);
 
 		return "redirect:/admin/staff/" + id; // redirect to the same page
 	}
@@ -287,6 +290,6 @@ public class AdminController {
 	public String logout(HttpSession session, Model model) {
 		session.invalidate();
 		model.addAttribute("info", "Logged out successfully.");
-		return "staffs/commonLogin";
+		return "index";
 	}
 }

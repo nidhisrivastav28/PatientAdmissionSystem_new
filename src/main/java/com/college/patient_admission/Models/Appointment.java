@@ -21,7 +21,7 @@ import lombok.Data;
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long ID;
+	private long id;
 
 	@Column(nullable = false)
 	private LocalDate createdOn;
@@ -73,11 +73,11 @@ public class Appointment {
 	}
 
 	public long getID() {
-		return ID;
+		return id;
 	}
 
 	public void setID(long iD) {
-		ID = iD;
+		id = iD;
 	}
 
 	public LocalDate getCreatedOn() {

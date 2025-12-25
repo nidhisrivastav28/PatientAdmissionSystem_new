@@ -57,7 +57,7 @@ public class DoctorController {
 		
 		if(session.getAttribute("loggedInStaff") == null || session.getAttribute("role") == null || !session.getAttribute("role").equals("Doctor")) {
 			model.addAttribute("error", "Please login to access the Doctor Dashboard.");
-			return "staffs/commonLogin";
+			return "index";
 		}
 
 		StaffAuth doctor = staffAuthService.getAuthByStaffById(id);
@@ -198,7 +198,7 @@ public class DoctorController {
 	public String logout(HttpSession session, Model model) {
 		session.invalidate();
 		model.addAttribute("info", "Logged out successfully.");
-		return "staffs/commonLogin";
+		return "index";
 	}
 
 }

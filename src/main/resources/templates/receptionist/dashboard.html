@@ -60,101 +60,10 @@
     </div>
 
     <!-- APPOINTMENT REQUESTS -->
-    <div class="bg-white rounded-xl shadow p-6 mt-10 sm:mt-12 lg:mt-16">
-      <h2 class="text-xl font-semibold mb-4 text-blue-600">Appointment Requests</h2>
-
-      <!-- Responsive wrapper -->
-      <div class="overflow-x-auto">
-        <table class="w-full min-w-[600px] md:min-w-full border border-gray-200 rounded-lg overflow-hidden">
-          <thead class="bg-blue-600 text-white">
-            <tr>
-              <th class="py-3 px-4 text-left">Patient</th>
-              <th class="py-3 px-4 text-left">Doctor</th>
-              <th class="py-3 px-4 text-left">Date</th>
-              <th class="py-3 px-4 text-left">Time</th>
-              <th class="py-3 px-4 text-left">Reason</th>
-              <th class="py-3 px-4 text-left">Status</th>
-              <th class="py-3 px-4 text-center">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody class="bg-white divide-y divide-gray-200">
-            <!-- Sample Row 1 -->
-            <tr class="hover:bg-gray-50">
-              <td class="py-3 px-4 font-medium">John Doe</td>
-              <td class="py-3 px-4">Dr. Smith</td>
-              <td class="py-3 px-4">2025-12-07</td>
-              <td class="py-3 px-4">09:00 AM</td>
-              <td class="py-3 px-4">Checkup</td>
-              <td class="py-3 px-4">
-                <span class="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm">Pending</span>
-              </td>
-              <td class="py-3 px-4 text-center space-x-2">
-                <a href="#"
-                  class="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm inline-block">Approve</a>
-                <a href="#"
-                  class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm inline-block">Reject</a>
-              </td>
-            </tr>
-
-            <!-- Sample Row 2 -->
-            <tr class="hover:bg-gray-50">
-              <td class="py-3 px-4 font-medium">Jane Doe</td>
-              <td class="py-3 px-4">Dr. Adams</td>
-              <td class="py-3 px-4">2025-12-08</td>
-              <td class="py-3 px-4">10:00 AM</td>
-              <td class="py-3 px-4">Consultation</td>
-              <td class="py-3 px-4">
-                <span class="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm">Pending</span>
-              </td>
-              <td class="py-3 px-4 text-center space-x-2">
-                <a href="#"
-                  class="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm inline-block">Approve</a>
-                <a href="#"
-                  class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm inline-block">Reject</a>
-              </td>
-            </tr>
-
-            <!-- Sample Row 2 -->
-            <tr class="hover:bg-gray-50">
-              <td class="py-3 px-4 font-medium">Jane Doe</td>
-              <td class="py-3 px-4">Dr. Adams</td>
-              <td class="py-3 px-4">2025-12-08</td>
-              <td class="py-3 px-4">10:00 AM</td>
-              <td class="py-3 px-4">Consultation</td>
-              <td class="py-3 px-4">
-                <span class="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm">Pending</span>
-              </td>
-              <td class="py-3 px-4 text-center">
-                <a href="#" class="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">Approve</a>
-                <a href="#" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm ml-2">Reject</a>
-              </td>
-            </tr>
-
-            <!-- Backend data (commented) -->
-            <!--
-        <tr th:each="req : ${appointmentRequests}" class="hover:bg-gray-50">
-          <td class="py-3 px-4 font-medium" th:text="${req.patient.pname}">John Doe</td>
-          <td class="py-3 px-4" th:text="${req.doctor.name}">Dr. Smith</td>
-          <td class="py-3 px-4" th:text="${req.date}">2025-12-07</td>
-          <td class="py-3 px-4" th:text="${req.timeSlot}">09:00 AM</td>
-          <td class="py-3 px-4" th:text="${req.reason}">Checkup</td>
-          <td class="py-3 px-4">
-            <span class="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm" th:text="${req.status}">Pending</span>
-          </td>
-          <td class="py-3 px-4 text-center">
-            <a th:href="@{/receptionist/appointments/approve/{id}(id=${req.ID})}" class="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">Approve</a>
-            <a th:href="@{/receptionist/appointments/reject/{id}(id=${req.ID})}" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm ml-2">Reject</a>
-          </td>
-        </tr>
-        -->
-          </tbody>
-        </table>
-      </div>
-    </div>
+    
 
   </div>
-
+  
 </body>
 
 </html>

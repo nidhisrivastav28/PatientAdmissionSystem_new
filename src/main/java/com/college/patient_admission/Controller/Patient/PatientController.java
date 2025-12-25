@@ -46,7 +46,7 @@ public class PatientController {
     private AppointmentService appointmentService;
 
     @Autowired
-    DoctorService doctorService;
+    private DoctorService doctorService;
 
     // Login + Signup page
     @GetMapping("/login")
@@ -110,22 +110,29 @@ public class PatientController {
         model.addAttribute("patientId", patient.getId());
         model.addAttribute("activePage", "dashboard");
 
+        List<Doctor> doctors = doctorService.getAllDoctors();
+        model.addAttribute("doctors", doctors);
+
         return "patient/dashboard";
     }
 
     // Appointments page
     @GetMapping("/appointments/{id}")
     public String appointments(@PathVariable Long id, Model model) {
-
         Patient patient = patientService.findById(id);
         if (patient == null) {
             return "redirect:/patient/login";
         }
-
         model.addAttribute("patient", patient);
-        model.addAttribute("appointments", patientService.getAppointmentsByPatient(id));
+        // Upcoming / all appointments
+        model.addAttribute(
+                "appointments",
+                appointmentService.getAppointmentsForPatient(id));
 
-        // For Real doctor list from DB bt its not wrking
+        // PAST APPOINTMENTS (yahin add hoga)
+        // model.addAttribute("pastAppointments",appointmentRepo.findByPatient_IdAndAppointmentDateLessThanEqual(patient.getId(), LocalDate.now()));
+        model.addAttribute("appointments", appointmentRepo.findByPatient_Id(patient.getId()));
+
         List<Doctor> doctors = doctorService.getAllDoctors();
         if (doctors == null) {
             doctors = new ArrayList<>();
