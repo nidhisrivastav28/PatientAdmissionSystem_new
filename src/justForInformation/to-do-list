@@ -29,13 +29,10 @@
 # 2. Prescription part                                  
 # 3. Medical part       
 # 4. Billing part                                    
-# 5. Full Nurese part
--------------------------------------------------------------------------------------------------------------
-# FLOW OF PROJECT
-
+# 5. Full Nurse part
 -------------------------------------------------------------------------------------------------------------
 # Nidhi's Part                                         | Paulami's Part
-# 1. login-logout authentication part                  | 1. 
+# 1. login-logout authentication part                  | 
 # 2. email verification part                           |
 # 3. password reset part                               |
 # 4. patient dashboard UI part                         |
