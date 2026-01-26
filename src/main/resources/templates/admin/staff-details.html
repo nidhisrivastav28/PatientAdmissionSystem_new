@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/jpg" href="/images/title-icon.jpg">
+    <title>Staff Details</title>
+</head>
+
+<body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
+
+    <!-- SIDEBAR -->
+    <div th:replace="~{fragments/sideBar :: sidebar}"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="col-span-4">
+        <!-- DETAILS -->
+        <h1>Details</h1>
+        <div class="max-w-3xl mx-auto p-6 space-y-8 text-sm text-gray-700">
+            <!-- Personal Details -->
+            <section>
+                <h2 class="text-xl font-semibold">- Personal Details -</h2>
+                <div class="grid grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <label for="id" class="block text-sm font-medium">ID</label>
+                        <p id="id" class="mt-1 px-3 block w-full" th:text="${staff.ID}">12345</p>
+                    </div>
+                    <div>
+                        <label for="name" class="block font-medium">Name</label>
+                        <p id="name" class="mt-1 px-3 block w-full shadow-sm" th:text="${staff.name}">John Doe</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <label for="dob" class="block font-medium">Date of Birth</label>
+                        <p id="dob" class="mt-1 px-3 block w-full" th:text="${staff.dob}">01/01/1990</p>
+                    </div>
+                    <div>
+                        <label for="gender" class="block font-medium">Gender</label>
+                        <p id="gender" class="mt-1 px-3 block w-full" th:text="${staff.gender}">Male</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6 my-4">
+                    <div>
+                        <label for="email" class="block font-medium">Email</label>
+                        <p id="email" class="mt-1 px-3 block w-full" th:text="${userEmail}">jdoe@email.com</p>
+                    </div>
+                    <div>
+                        <label for="phone" class="block font-medium">Phone</label>
+                        <p id="phone" class="mt-1 px-3 block w-full" th:text="${staff.phone}">685685478</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="address" class="block font-medium">Address</label>
+                    <p id="address" class="mt-1 px-3 block w-full" th:text="${staff.address}">03/25 Baker's Lane</p>
+                </div>
+            </section>
+
+            <!-- Professional Details -->
+            <section>
+                <h2 class="text-xl font-semibold">- Professional Details -</h2>
+                <!-- Doctor-specific fields -->
+                <div th:if="${role == 'DOCTOR'}" class="grid grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <label for="licence" class="block font-medium">Licence Number</label>
+                        <p id="licence" class="mt-1 px-3 block w-full" th:text="${staff.licenseNumber}">LIC123456</p>
+                    </div>
+                    <div>
+                        <label for="specialisation" class="block font-medium">Specialisation</label>
+                        <p id="specialisation" class="mt-1 px-3 block w-full" th:text="${staff.specialisation}">
+                            Cardiology</p>
+                    </div>
+                </div>
+
+                <!-- Nurse-specific fields -->
+                <div th:if="${role == 'NURSE'}" class="grid grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <label for="department" class="block font-medium">Department</label>
+                        <p id="department" class="mt-1 px-3 block w-full" th:text="${staff.department}">Pediatrics</p>
+                    </div>
+                    <div>
+                        <label for="shift" class="block font-medium">Shift</label>
+                        <p id="shift" class="mt-1 px-3 block w-full" th:text="${staff.shift}">Morning</p>
+                    </div>
+                </div>
+
+                <!-- Receptionist-specific fields -->
+                <div th:if="${role == 'RECEPTIONIST'}" class="grid grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <label for="desk" class="block font-medium">Desk</label>
+                        <p id="desk" class="mt-1 px-3 block w-full" th:text="${staff.desk}">Front Desk</p>
+                    </div>
+                    <div>
+                        <label for="workHours" class="block font-medium">Shift</label>
+                        <p id="workHours" class="mt-1 px-3 block w-full" th:text="${staff.shift}">Evening</p>
+                    </div>
+                </div>
+                <form th:action="@{'/admin/staff/' + ${staff.ID} + '/update'}" method="post" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-6 mt-4">
+                        <div>
+                            <label for="salary" class="block font-medium text-black">Salary</label>
+                            <input type="number" id="salary" name="salary" th:value="${staff.salary}"
+                                class="mt-1 px-3 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none text-black shadow-sm" />
+                        </div>
+                        <div class="grid grid-cols-2 gap-6 mt-4">
+                            <div>
+                                <label class="block font-medium text-black">Experience</label>
+                                <input type="text" name="experience" th:value="${staff.experience}"
+                                    placeholder="e.g. 2 years" class="mt-1 px-3 block w-full border-0 border-b-2 border-gray-400
+                      focus:border-blue-600 focus:outline-none shadow-sm" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="startDate" class="block font-medium">Start Date</label>
+                            <p id="startDate" class="mt-1 block w-full" th:text="${staff.startDate}">22-10-2014</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6 mt-4">
+                        <div>
+                            <label for="end_date" class="block text-sm font-medium text-black">End Date</label>
+                            <input type="date" id="end_date" name="endDate"
+                                class="mt-1 block text-black w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" />
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="mt-4 w-2/3 h-auto p-3 flex justify-center items-center font-bold bg-blue-600 text-white cursor-pointer">
+                        Save Changes
+                    </button>
+                </form>
+            </section>
+
+        </div>
+
+    </div>
+</body>
+
+</html>

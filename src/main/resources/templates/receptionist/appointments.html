@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    
+    <link rel="icon" type="image/jpg" href="/images/title-icon.jpg">
+    <title>Appointments</title>
+</head>
+
+<body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
+
+    <!-- SIDEBAR -->
+    <div th:replace="~{fragments/sideBar :: sidebar}"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="col-span-4 px-6">
+
+        <!-- ADD BUTTON -->
+        <div class="flex justify-between items-center py-4">
+            <button onclick="openModal()"
+                class="whitespace-nowrap h-fit px-3 py-1 rounded border-2 border-black hover:border-blue-500 hover:bg-blue-500 hover:text-white hover:font-bold">
+                Add Appointment
+            </button>
+        </div>
+
+        <!-- MAIN TABLE -->
+        <div class="p-6 overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 border">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500">Doctor</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500">Patient</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500">Time</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500">Reason</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="bg-white divide-y divide-gray-200"
+                    th:if="${appointments != null and !appointments.isEmpty()}">
+
+                    <tr th:each="app : ${appointments}" class="hover:bg-blue-50 transition">
+
+                        <!-- Doctor -->
+                        <td class="px-6 py-3" th:text="${app.doctor.name}"></td>
+
+                        <!-- Patient -->
+                        <td class="px-6 py-3" th:text="${app.patient.pname}"></td>
+
+                        <!-- Date -->
+                        <td class="px-6 py-3" th:text="${app.appointmentDate}"></td>
+
+                        <!-- Time -->
+                        <td class="px-6 py-3" th:text="${app.from + ' - ' + app.to}"></td>
+
+                        <!-- Reason -->
+                        <td class="px-6 py-3" th:text="${app.reason}"></td>
+
+                        <!-- Status -->
+                        <td class="p-3 font-semibold" th:classappend="${app.status == 'PENDING' ? 'text-yellow-600' :
+                    (app.status == 'APPROVED' ? 'text-green-600' : 'text-red-600')}" th:text="${app.status}">
+                        </td>
+
+
+                        <!-- ACTIONS -->
+                        <td class="px-6 py-3 flex gap-2">
+
+                            <!-- APPROVE -->
+                            <form th:action="@{'/receptionist/appointments/approve/' + ${app.ID}}" method="post">
+                                <button class="bg-green-600 text-white px-3 py-1 rounded">Approve</button>
+                            </form>
+
+                            <!-- REJECT -->
+                            <form th:action="@{'/receptionist/appointments/reject/' + ${app.ID}}" method="post">
+                                <button class="bg-red-600 text-white px-3 py-1 rounded">Reject</button>
+                            </form>
+
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- EMPTY STATE -->
+            <div id="emptyState"
+                class="border border-t-0 border-gray-200 rounded-b p-6 flex flex-col items-center justify-center space-y-4"
+                th:if="${appointments == null or appointments.isEmpty()}">
+
+                <img src="/images/NotFound.svg" alt="No data" class="w-64" />
+
+                <p class="text-gray-700 font-medium">
+                    No appointments found.
+                </p>
+            </div>
+        </div>
+
+        <div id="appointmentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white w-full max-w-2xl max-h-[76vh] overflow-y-auto p-6 rounded shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">New Appointment</h2>
+                    <button onclick="closeModal()">
+                        <i class="fa-solid fa-xmark text-xl text-red-600 hover:font-bold cursor-pointer"></i>
+                    </button>
+                </div>
+
+                <form th:action="@{/receptionist/appointments/create/{id}(id=${receptionistId})}" method="post" id="appointmentForm" class="space-y-6 text-sm">
+                    <!-- Doctor Selection -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/2">
+                            <label for="d_id" class="block font-medium text-gray-700">Doctor ID</label>
+                            <select id="d_id" name="d_id" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" required>
+                                <option value="" disabled selected>Select Doctor</option>
+                                <option th:each="doc : ${doctors}" th:value="${doc.ID}" th:text="${doc.ID + ' (' + doc.name + ')'}"></option>
+                            </select>
+                        </div>
+                        <div class="w-1/2">
+                            <label for="d_name" class="block font-medium text-gray-700">Doctor Name</label>
+                            <input type="text" id="d_name" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" readonly />
+                        </div>
+                    </div>
+
+                    <!-- Patient Selection -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/2">
+                            <label for="p_id" class="block font-medium text-gray-700">Patient ID</label>
+                            <select id="p_id" name="p_id" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm"required>
+                                <option value="" disabled selected>Select Patient</option>
+                                <option th:each="p : ${patients}" th:value="${p.ID}" th:text="${p.ID + ' (' + p.name + ')'}"></option>
+                            </select>
+                        </div>
+                        <div class="w-1/2">
+                            <label for="pname" class="block font-medium text-gray-700">Patient Name</label>
+                            <input type="text" id="pname" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" readonly />
+                        </div>
+                    </div>
+
+                    <!-- Date and Time -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/2">
+                            <label for="date" class="block font-medium text-gray-700">Date</label>
+                            <input type="date" id="date" name="date" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" required />
+                        </div>
+                        <div class="w-1/4">
+                            <label for="from" class="block font-medium text-gray-700">From</label>
+                            <select id="from" name="from" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" required></select>
+                        </div>
+                        <div class="w-1/4">
+                            <label for="to" class="block font-medium text-gray-700">To</label>
+                            <input type="text" id="to" name="to" class="mt-1 block w-full border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none shadow-sm" readonly required />
+                        </div>
+                    </div>
+
+                    <!-- Reason -->
+                    <div>
+                        <label for="reason" class="block font-medium text-gray-700">Reason</label>
+                        <input type="text" id="reason" name="reason" class="mt-1 px-3 block w-full shadow-sm border-0 border-b-2 border-gray-400 focus:border-blue-600 focus:outline-none" required />
+                    </div>
+
+                    <div id="finalSubmitDiv">
+                        <button type="submit" id="submitBtn" disabled class="cursor-pointer w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        const doctors = /*[[${doctors}]]*/ [];
+        const patients = /*[[${patients}]]*/ [];
+        const lastEndTimes = /*[[${lastEndTimes}]]*/ {};
+    </script>
+    <script src="/js/receptionist/appointments.js"></script>
+
+</body>
+
+</html>

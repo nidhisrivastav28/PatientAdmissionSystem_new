@@ -1,0 +1,42 @@
+# login of doctor-nuse-receptionist mismatched ✅
+# login-logout authentication ✅
+# have to separate the admin part or else need to need an email pswd for admin login✅
+# whole patient part is pending
+# have to connect the patient part with admin & other staffs
+# remove warning in Models->staffs
+-------------------------------------------------------------------------------------------------------------
+# 08-11-2025
+# authentication part fully complete ✅
+# separated the side part of all the staff & then included it in the html file ✅
+# now patient & its connection is left
+-------------------------------------------------------------------------------------------------------------
+# 18-11-2025
+# tanmoy- try to work on patient side by connecting it with doctor patient nurse & receptionist accordingly
+# after modifing anything try to write the changed part
+-------------------------------------------------------------------------------------------------------------
+# 04-12-2025
+# error in the patient/report pg 
+-------------------------------------------------------------------------------------------------------------
+# 05-12-2025
+# need to create medical & precriptions Models
+# Patient UI is done
+# Pending: Connection of patient with other staffs
+# will be completed by next week
+-------------------------------------------------------------------------------------------------------------
+# 26-12-2025
+# FUTURE SCOPE                                       
+# 1. Adding appointments in Receptionist section      
+# 2. Prescription part                                  
+# 3. Medical part       
+# 4. Billing part
+# 5. Payement gateway integration
+-------------------------------------------------------------------------------------------------------------
+# Nidhi's Part                                         | Paulami's Part
+# 1. login-logout authentication part                  | 1. Backend + UI for Staff
+# 2. email verification part                           | 2. Input validation
+# 3. password reset part                               |
+# 4. patient dashboard UI part                         |
+# 5. connecting patient with other staffs              |
+# 6. few changes done in staffs part                   |
+-------------------------------------------------------------------------------------------------------------
+

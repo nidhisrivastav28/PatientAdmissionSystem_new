@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${role} + ' Login'">Staff Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function showOtpForm() {
+      document.getElementById('email-section').style.display = 'none';
+      document.getElementById('otp-section').style.display = 'block';
+    }
+    function showPasswordForm() {
+      document.getElementById('otp-section').style.display = 'none';
+      document.getElementById('password-section').style.display = 'block';
+    }
+  </script>
+</head>
+
+<body class="bg-blue-100 flex justify-center items-center min-h-screen">
+  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
+
+    <h1 class="text-2xl font-bold text-blue-800 mb-4" th:text="${role != null ? role + ' Login' : 'Staff Login'}">Staff
+      Login</h1>
+
+    <!-- Messages -->
+    <div th:if="${error}" class="text-red-600 mb-3 font-semibold" th:text="${error}"></div>
+    <div th:if="${success}" class="text-green-600 mb-3 font-semibold" th:text="${success}"></div>
+
+    <!-- 1️⃣ Email Section -->
+    <form id="email-section" th:action="@{/staff/send-otp}" th:if="${otpSent == null and otpVerofied == null}"
+      method="post" class="space-y-4">
+
+      <input type="hidden" name="role" th:value="${role}">
+      <input type="text" name="email" placeholder="Enter Email" class="border rounded px-3 py-2 w-full" required
+        th:value="${email}">
+
+      <!--Info Messages -->
+      <div th:if="${info}" class="text-blue-600  font-semibold">
+        <a th:href="@{/}" class="underline hover:text-blue-800" th:text="${info}"></a>
+      </div>
+
+      <button type="submit"
+        class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        Send OTP
+      </button>
+    </form>
+
+    <!-- 2️⃣ OTP Section -->
+    <form id="otp-section" th:action="@{/staff/verify-otp}"
+      th:if="${otpSent != null and otpVerified == null and error == null}" method="post" class="space-y-4">
+      <input type="hidden" name="role" th:value="${role}">
+      <input type="hidden" name="email" th:value="${email}"> <!-- 🔑 persist email -->
+      <input type="text" name="otp" placeholder="Enter OTP" class="border rounded px-3 py-2 w-full" required>
+      <button type="submit"
+        class="bg-green-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-700 transition">
+        Verify OTP
+      </button>
+    </form>
+
+    <!-- 3️⃣ Set Password Section -->
+    <form id="password-section" th:action="@{/staff/set-password}" th:if="${otpVerified != null and error == null}"
+      method="post" class="space-y-4">
+      <input type="hidden" name="role" th:value="${role}">
+      <input type="hidden" name="email" th:value="${email}"> <!-- 🔑 persist email -->
+      <input type="password" name="password" placeholder="Enter Password" class="border rounded px-3 py-2 w-full"
+        required>
+      <input type="password" name="confirmPassword" placeholder="Confirm Password"
+        class="border rounded px-3 py-2 w-full" required>
+      <button type="submit"
+        class="bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+        Set Password & Login
+      </button>
+    </form>
+
+    <!-- 4️⃣ Login Section -->
+    <form id="login-section" th:action="@{/staff/login}" th:if="${passwordAlreadySet != null and error != null}"
+      method="post" class="space-y-4">
+      <input type="hidden" name="role" th:value="${role}">
+      <input type="text" name="username" th:value="${email}" placeholder="Enter Email"
+        class="border rounded px-3 py-2 w-full" required readonly>
+      <input type="password" name="password" placeholder="Enter Password" class="border rounded px-3 py-2 w-full"
+        required>
+      <button type="submit"
+        class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        Login
+      </button>
+    </form>
+
+  </div>
+
+  <!-- Success Popup -->
+  <div th:if="${passwordSet != null}"
+    class="fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-4 rounded shadow-lg z-50 animate-fade">
+    <p th:text="${passwordSet}">Password set successfully! Redirecting...</p>
+  </div>
+
+  <!-- ✅ Error Popup -->
+  <div th:if="${errorPopup != null}"
+    class="fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-4 rounded shadow-lg z-50 animate-fade">
+    <p th:text="${errorPopup}">Error occurred!</p>
+  </div>
+
+  <script th:inline="javascript">
+    const redirectIndex = [[${ redirectIndex ?: false }]];
+
+    if (redirectIndex) {
+      setTimeout(function () {
+        window.location.href = "/";
+      }, 2000);
+    }
+  </script>
+
+
+</body>
+
+</html>

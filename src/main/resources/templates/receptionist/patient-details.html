@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  
+  <link rel="icon" type="image/jpg" href="/images/title-icon.jpg">
+  <title>Staff Details</title>
+</head>
+
+<body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
+
+  <!-- SIDEBAR -->
+  <div th:replace="~{fragments/sideBar :: sidebar}"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="col-span-4">
+    <!-- DETAILS -->
+    <h1>Details</h1>
+    <div class="max-w-3xl mx-auto p-6 space-y-8 text-sm text-gray-700">
+      <!-- Personal Details -->
+      <section>
+        <h2 class="text-xl font-semibold">- Patient Details -</h2>
+        <div class="grid grid-cols-2 gap-6 mt-4">
+          <div>
+            <label for="id" class="block text-sm font-medium">ID</label>
+            <p id="id" class="mt-1 px-3 block w-full" th:text="${patient.id}">12345</p>
+          </div>
+          <div>
+            <label for="name" class="block font-medium">Name</label>
+            <p id="name" class="mt-1 px-3 block w-full shadow-sm" th:text="${patient.pname}">John Doe</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 mt-4">
+          <div>
+            <label for="dob" class="block font-medium">Date of Birth</label>
+            <p id="dob" class="mt-1 px-3 block w-full" th:text="${patient.pdob}">01/01/1990</p>
+          </div>
+          <div>
+            <label for="gender" class="block font-medium">Gender</label>
+            <p id="gender" class="mt-1 px-3 block w-full" th:text="${patient.pgender}">Male</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 my-4">
+          <div>
+            <label for="email" class="block font-medium">Email</label>
+            <p id="email" class="mt-1 px-3 block w-full" th:text="${patient.pemail}">jdoe@email.com</p>
+          </div>
+          <div>
+            <label for="phone" class="block font-medium">Phone</label>
+            <p id="phone" class="mt-1 px-3 block w-full" th:text="${patient.pphnno}">685685478</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <title>Info</title>
+</head>
+
+<body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
+
+
+  <!-- SIDEBAR -->
+  <div th:replace="~{fragments/sideBar :: sidebar}"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="col-span-4">
+    <div class="w-full flex justify-center items-center shadow-sm rounded border border-gray-300 m-10">
+      <h2>About Nurse's Role:</h2>
+    </div>
+    <p>
+      As a Nurse, I can:
+      <br /><br />
+      <li>check and review detailed information about my patients.</li>
+      <br />
+      <li>view and manage my scheduled appointments.</li>
+      <br />
+      <li>create and register new patients in the system.</li>
+      <br />
+      <li>create new appointments for my patients.</li>
+    </p>
+  </div>
+</body>
+
+</html>

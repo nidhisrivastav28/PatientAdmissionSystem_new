@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  
+  <link rel="icon" type="image/jpg" href="/images/title-icon.jpg">
+  <title>Dashboard</title>
+</head>
+
+<body class="w-screen h-screen grid grid-cols-5 gap-8 p-4" style="font-family: 'Poppins', sans-serif;">
+
+  <!-- SIDEBAR -->
+  <div th:replace="~{fragments/sideBar :: sidebar}"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="col-span-4 space-y-8">
+
+    <!-- STATUS BOXES -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+        <h2 class="text-md font-semibold mb-4">Status</h2>
+        <div id="status-container" class="grid grid-cols-2 gap-4">
+          <div th:each="item : ${statusList}"
+            class="flex items-center justify-between bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+            <div>
+              <div class="text-blue-600 text-2xl font-bold mb-2" th:text="${item.value}">0</div>
+              <div class="text-gray-700 text-sm font-medium">
+                <span th:text="${item.label}">Label</span>
+              </div>
+            </div>
+            <span class="status-icon w-1/2 h-full flex items-center justify-center bg-blue-300/30 rounded">
+              <i th:classappend="${item.label == 'New Patients' ? 'fa-solid fa-hospital-user' :
+                                  item.label == 'New Booking' ? 'fa-solid fa-bookmark' :
+                                  'fa-solid fa-circle-question'} + ' text-blue-600 text-2xl'"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WELCOME SECTION -->
+    <div class="relative w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden">
+      <img src="/images/Receptionist.jpg" alt="background" class="
+        absolute inset-0 w-full 
+        h-30 sm:h-60 md:h-72 lg:h-full 
+        object-cover rounded-lg
+    " />
+      <div class="absolute inset-0 bg-white/60"></div>
+
+      <div class="relative z-10 px-6 py-4">
+        <h3 class="text-lg font-semibold mb-2">Welcome!</h3>
+        <h1 class="text-3xl font-bold my-2 doctor-name" th:text="${receptionistName} + '.'">--</h1>
+        <p class="text-sm mb-4 max-w-xl">
+          Thanks for joining us. You can monitor daily activities here!!
+        </p>
+      </div>
+    </div>
+
+    <!-- APPOINTMENT REQUESTS -->
+    
+
+  </div>
+  
+</body>
+
+</html>
